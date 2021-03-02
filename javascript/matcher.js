@@ -83,7 +83,9 @@ function Start() {
 	}
 	id("dropdown").style.visibility = "visible";
 	id("text1").style.visibility = "visible";
+	id("text2").style.visibility = "visible";
 	id("bt1").style.visibility = "hidden";
+	id("bt2").style.visibility = "visible";
 }
 
 // als je op een button klikt dan checkt de functie of de img en naam gelijk zijn
@@ -98,4 +100,6 @@ function Guess() {
 		console.log(score);
 }
 
-
+function Reset() {
+	location.reload();
+}
