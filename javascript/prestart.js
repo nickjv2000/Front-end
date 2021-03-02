@@ -1,4 +1,4 @@
-
+var id = function(id) {return document.getElementById(id);};
 
 id("dropdown").style.visibility = "hidden";
 
