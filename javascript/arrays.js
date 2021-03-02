@@ -14,17 +14,16 @@ var games = [
 ];
 
 var ids = [
-	{id:"but", img:"img1"}
-	{"but1", img:"img1"}
-	{"but2", img:"img1"}
-	{"but3", img:"img1"}
-	{"but4", img:"img1"}
-	{"but5", img:"img1"}
-	{"but6", img:"img1"}
-	{"but7", img:"img1"}
-	{"but8", img:"img1"}
-	{"but9", img:"img1"}
-	{"but10", img:"img1"}
-	{"but11", img:"img1"}
+	{id:"but", img:"img"},
+	{id:"but1", img:"img1"},
+	{id:"but2", img:"img2"},
+	{id:"but3", img:"img3"},
+	{id:"but4", img:"img4"},
+	{id:"but5", img:"img5"},
+	{id:"but6", img:"img6"},
+	{id:"but7", img:"img7"},
+	{id:"but8", img:"img8"},
+	{id:"but9", img:"img9"},
+	{id:"but10", img:"img10"},
+	{id:"but11", img:"img11"}
 ];
-
