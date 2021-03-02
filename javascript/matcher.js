@@ -75,12 +75,12 @@ console.log(score);
 // start de matching game en geeft alles een naam & img en maakt alles visible
 
 function Start() {
-	for (i = 0; i < names.length; i++) {
+	for (i = 0; i < names.length; i++) {	
  	 	id(ids[i]).innerHTML = names[i];
  	 	id(imgs[i]).innerHTML = images[i];
  	 	id(ids[i]).style.visibility = "visible";
 		id(imgs[i]).style.visibility = "visible";
-	}
+	} 
 	id("dropdown").style.visibility = "visible";
 	id("text1").style.visibility = "visible";
 	id("text2").style.visibility = "visible";
