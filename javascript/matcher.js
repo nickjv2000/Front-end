@@ -96,6 +96,6 @@ function Guess() {
 		score = score - 1;
 		}
 		console.log(score);
-	}
+}
 
 
