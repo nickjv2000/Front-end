@@ -10,21 +10,25 @@ var score = 0;
 
 console.log(score);
 
-// zorgt ervoor dat elke but id word opgepakt
+// id's bt1 en bt2 een const geven om later te linken met een functie
+// alle classes met "btn" pakken en om een const aan te maken
 
 const start = id("bt1");
 const reset = id("bt2");
-const answer = document.getElementsByClassName("btn");
+const answers = document.getElementsByClassName("#but1");
 
 console.log(answer);
-// start de matching game
-// geeft alles een naam & img
-// maakt alles visible
+
+
 // maakt een random nummer
 
 function generateNumber() {
 	return Math.floor(Math.random() * games.length);
 }
+
+// start de matching game
+// geeft alles een naam & img
+// maakt alles visible
 
 start.onclick = function start() {
 	for (i = 0; i < games.length; i++) {	
@@ -43,7 +47,7 @@ start.onclick = function start() {
 // als je op een button klikt dan checkt de functie of de img en naam gelijk zijn
 // geeft dan een verandering op de variabele score
  
-answer.onclick = function guess() {
+answers.onclick = function guess() {
 	if(games.name == games.image) {
 		score = score + 1;
 	} else if(games.name != games.image) {
