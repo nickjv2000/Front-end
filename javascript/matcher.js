@@ -11,8 +11,6 @@ var div = document.createElement('div');
 const start = id("bt1");
 const reset = id("bt2");
 
-console.log(games[generateNumber()].image);
-
 // Creates random numbers
 
 function generateNumber() {
