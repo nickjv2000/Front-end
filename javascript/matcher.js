@@ -41,24 +41,26 @@ start.onclick = function start() {
 
 	for (u = 0; u < games.length; u++) {
 
+	randomImage = generateNumber()
+	randomName = generateNumber()
 
-	randomImage = games[generateNumber()].image;
-	randomName = games[generateNumber()].name;
+	console.log(randomImage);
+	console.log(randomName);
 	
 	var div1 = document.createElement("div");
 	div1.className = "card";
 
 	var div2 = document.createElement("img");
 	div2.className = "img";
-	div2.src = randomImage;
+	div2.src = games[randomImage].image;
 
 	div1.appendChild(div2);
 
 	var btn = document.createElement("button");
 	btn.className = "btn btn-dark";
-	btn.innerHTML = randomName;
+	btn.innerHTML = games[randomName].name;
 	btn.onclick = function() {guess()};
- 
+	
 	div1.appendChild(btn);
 
 	div0.appendChild(div1);
