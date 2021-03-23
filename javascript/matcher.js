@@ -52,29 +52,41 @@ start.onclick = function start() {
 
 	for (u = 0; u < games.length; u++) {
 
+<<<<<<< HEAD
 		randomImage = games[generateNumber()].image;
 		randomName = games[generateNumber()].name;
 
+=======
+>>>>>>> master
 		var div1 = document.createElement("div");
 		div1.className = "card";
 
 		var div2 = document.createElement("img");
 		div2.className = "img";
+<<<<<<< HEAD
 		div2.src = randomImage;
+=======
+		div2.src = games[generateNumber()].image;
+>>>>>>> master
 
 		div1.appendChild(div2);
 
 		var btn = document.createElement("button");
 		btn.className = "btn btn-dark";
+<<<<<<< HEAD
 		btn.innerHTML = randomName;
 		btn.onclick = function() {guess()};
 
+=======
+		btn.innerHTML = games[generateNumber()].name;
+>>>>>>> master
 		div1.appendChild(btn);
 
 		div0.appendChild(div1);
 		containerDiv.appendChild(div0);
 	}	
 }
+<<<<<<< HEAD
 // als je op een button klikt dan checkt de functie of de img en naam gelijk zijn
 // geeft dan een verandering op de variabele score
 
@@ -86,6 +98,20 @@ function guess() {
 	}
 	console.log(score);
 };
+=======
+
+// als je op een button klikt dan checkt de functie of de img en naam gelijk zijn
+// geeft dan een verandering op de variabele score
+ 
+// answers.onclick = function guess() {
+// 	if(games.name == games.image) {
+// 		score = score + 1;
+// 	} else if(games.name != games.image) {
+// 		score = score - 1;
+// 	}
+// 	console.log(score);
+// };
+>>>>>>> master
 
 // reload de webpagina wanneer je op bt2 drukt
 

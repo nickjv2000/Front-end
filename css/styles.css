@@ -3,6 +3,18 @@
 	min-width: 300px !important;
 }
 
+<<<<<<< HEAD
+=======
+.container {
+	margin-top: 50px;
+}
+
+.card {
+	height: 300px;
+	min-width: 300px !important;
+}
+
+>>>>>>> master
 .img {
 	width: 350px;
 	height: 300px;
