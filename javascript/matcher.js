@@ -11,8 +11,6 @@ var div = document.createElement('div');
 const start = id("bt1");
 const reset = id("bt2");
 
-
-console.log(answers);
 console.log(games[generateNumber()].image);
 
 // Creates random numbers
@@ -73,7 +71,7 @@ start.onclick = function start() {
 // If you click on a button, the function check whether the name and image are the same.
 // After checking it adjusts the variable "score"
  
-answers.onclick = function guess() {
+function guess() {
 	if(randomName == randomImage) {
 		score = score + 1;
 	} else if(randomName != randomImage) {
