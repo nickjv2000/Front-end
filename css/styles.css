@@ -5,3 +5,13 @@ body {
 .container {
 	margin-top: 50px;
 }
+
+.card {
+	height: 300px;
+	min-width: 300px !important;
+}
+
+.img {
+	width: 350px;
+	height: 300px;
+}
