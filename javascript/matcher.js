@@ -19,6 +19,7 @@ const reset = id("bt2");
 const answers = document.getElementsByClassName("#but1");
 
 console.log(answers);
+console.log(games[generateNumber()].image);
 
 // maakt een random nummer
 
@@ -46,6 +47,9 @@ start.onclick = function start() {
 
 	var containerDiv = document.getElementById("containers");
 
+	var div0 = document.createElement("div");
+	div0.className = "card-group";
+
 	for (u = 0; u < games.length; u++) {
 
 		var div1 = document.createElement("div");
@@ -53,15 +57,17 @@ start.onclick = function start() {
 
 		var div2 = document.createElement("img");
 		div2.className = "img";
-		div2.src = games[generateNumber()].img;
+		div2.src = games[generateNumber()].image;
 
 		div1.appendChild(div2);
 
 		var btn = document.createElement("button");
 		btn.className = "btn btn-dark";
+		btn.innerHTML = games[generateNumber()].name;
 		div1.appendChild(btn);
 
-		containerDiv.appendChild(div1);
+		div0.appendChild(div1);
+		containerDiv.appendChild(div0);
 	}	
 }
 
