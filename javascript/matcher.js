@@ -29,6 +29,8 @@ function visibleElements() {
 
 // Start the matching game
 // Create the images & buttons
+// If you click on a button, check whether the name and image are the same
+// After checking it adjusts the variable "score"
 
 start.onclick = function start() {
 
@@ -59,37 +61,22 @@ start.onclick = function start() {
 	var btn = document.createElement("button");
 	btn.className = "btn btn-dark";
 	btn.innerHTML = games[randomName].name;
-	btn.onclick = function() {guess()};
-	
-	// btn.onclick = console.log("test");
-	// if(randomName == randomImage) {
-	// 	btn.onclick =
-	// 	console.log(score);
-	// } else if(randomName != randomImage) {
-	//	btn.onclick = score - 1;
-	//	console.log(score);
-	// }
 
+	if(randomName == randomImage) {
+		btn.onclick = score + 1;
+	} else if(randomName != randomImage) {
+		btn.onclick = score - 1;
+	}
 
 	div1.appendChild(btn);
 
 	div0.appendChild(div1);
 	containerDiv.appendChild(div0);
 	}	
-}
 
-// If you click on a button, the function check whether the name and image are the same.
-// After checking it adjusts the variable "score"
- 
-function guess() {
-	if(randomName == randomImage) {
-		score = score + 1;
-	} else if(randomName != randomImage) {
-		score = score - 1;
-	}
 	console.log(score);
-};
- 
+	
+}
 
 // Reload the page when pressing the "Reset" button
 
