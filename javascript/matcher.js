@@ -61,6 +61,16 @@ start.onclick = function start() {
 	btn.innerHTML = games[randomName].name;
 	btn.onclick = function() {guess()};
 	
+	// btn.onclick = console.log("test");
+	// if(randomName == randomImage) {
+	// 	btn.onclick =
+	// 	console.log(score);
+	// } else if(randomName != randomImage) {
+	//	btn.onclick = score - 1;
+	//	console.log(score);
+	// }
+
+
 	div1.appendChild(btn);
 
 	div0.appendChild(div1);
