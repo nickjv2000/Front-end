@@ -1,104 +1,102 @@
-// Creating variables where random numbers are being generated
 // Id variable made smaller from document.getelementbyid to id
-
 var id = function(id) {return document.getElementById(id);};
+
+// Creating variables where random numbers are being generated
 var randoms = Math.floor(Math.random() * games.length);
 var score = 10;
 var div = document.createElement('div');
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 
-// giving id's bt1 and bt2 a const to link with a function
-// hides finish button
-
+// giving id's bt1, bt2 and bt3 a const to link with a function
 const start = id("bt1");
 const reset = id("bt2");
 const finish = id("bt3");
 
+// hides finish button
 finish.style.visibility = "hidden";
 
 // Creates random numbers
-
 function generateNumberName() {
-	return Math.floor(Math.random() * spliceName.length);
+	return Math.floor(Math.random() * games.length);
 }
 
 function generateNumberImage() {
-	return Math.floor(Math.random() * spliceImage.length);
+	return Math.floor(Math.random() * games.length);
 }
 
-// Makes it so that the elements become visible
-
+// Making the elements invisible
 function visibleElements() {
 	id("dropdown").style.visibility = "visible";
+
 	id("text1").style.visibility = "visible";
 	id("text2").style.visibility = "visible";
-	reset.style.visibility = "visible";
-	finish.style.visibility = "visible";
-	start.remove();
 	id("text3").style.display = "none";
 	id("text4").style.display = "none";
 	id("text5").style.display = "none";
 	id("text6").style.display = "none";
+
+	reset.style.visibility = "visible";
+	finish.style.visibility = "visible";
+	start.remove();
 }
 
 // Start the matching game
-// Create the images & buttons
-// If you click on a button, check whether the name and image are the same
-// After checking it adjusts the variable "score"
-
+// Apply the function visibleElements
+// create a variable for the container div
 start.onclick = function start() {
 
 	visibleElements();
 
 	var containerDiv = document.getElementById("containers");
 
+	// Create a card group to put the divs in
 	var div0 = document.createElement("div");
-	div0.className = "card-group";
+		div0.className = "card-group";
 
 	for (u = 0; u < games.length; u++) {
-		randomImage = generateNumberImage();
-		randomName = generateNumberName();
+
+		// Apply a random number to the variables
+		randomNumberName = generateNumberName();
+		randomNumberImage = generateNumberImage();
 	
+		// Create divs and buttons
 		var div1 = document.createElement("div");
-		div1.className = "card";
+			div1.className = "card";
 
 		var div2 = document.createElement("img");
-		div2.className = "img";
-		div2.src = games[randomImage].image;
-
-		div1.appendChild(div2);
+			div2.className = "img";
+			div2.src = games[randomNumberImage].image;
 
 		var btn = document.createElement("button");
-		btn.className = "btn btn-dark";
-		btn.innerHTML = games[randomName].name;
+			btn.className = "btn btn-dark";
+			btn.innerHTML = games[randomNumberName].name;
 
+		// Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container
+		div1.appendChild(div2);
+
+		// Add 
+		div1.appendChild(btn);
+		div0.appendChild(div1);
+		containerDiv.appendChild(div0);	
+
+		// Remove numbers from the games array
+		spliceName.splice(games.name, 1);	
+		spliceImage.splice(games.image, 1);
+		
+		// Apply scores by clicking on the names
 		if(randomName == randomImage) {
 			btn.onclick = function(){score += 1};
 		} else if(randomName != randomImage) {
 			btn.onclick = function(){score -= 1};
 		}
-
-		div1.appendChild(btn);
-
-		div0.appendChild(div1);
-		containerDiv.appendChild(div0);	
-
-		console.log(randomImage, randomName);
-		console.log(spliceImage, spliceName);
-		spliceName.splice(randomName, 1);	
-		spliceImage.splice(randomImage, 1);
-		
 	}	
 }
 
 // A function that loads the last page of the website
-// showing the results of the game
-// removes any buttons/text that was made prior to the result screen
-// adds back the text 3 up to 6 for results
-// looks at what number the score is, depending on the score gives text
-
 finish.onclick = function finish() {
+
+// Removes any buttons/text that was made prior to the result screen
 	id("dropdown").remove();
 	id("text1").remove();
 	id("text2").remove();
@@ -107,58 +105,54 @@ finish.onclick = function finish() {
 
 	reset.remove();
 
+// Adds back the text 3 up to 6 for results
 	id("text3").style.display = "";
 	id("text4").style.display = "";
 	id("text5").style.display = "";
 	id("text6").style.display = "";
 
+	id("text3").style.fontSize = "x-large";
+	id("text4").style.fontSize = "x-large";
+	id("text5").style.fontSize = "x-large";
+	id("text6").style.fontSize = "x-large";
+
+// Looks at what number the score is, depending on the score gives text
 	var result = document.getElementById("text3");
 	result.innerHTML = "Your score is: " + score;
 
+// Showing the results of the game
+	// Score higher than 10
 	if (score > 10){
+
 		document.body.style.backgroundImage = "url('../images/happy.gif')";
 
 		var resultTexts = document.getElementById("text4");
-
-		resultTexts.innerHTML = "If you've gotten a score above 10, congratulations you've done very well!";
+			resultTexts.innerHTML = "If you've gotten a score above 10, congratulations you've done very well!";
 
 		id("text3").style.color = "red";
 		id("text4").style.color = "red";
 		id("text5").style.color = "red";
 		id("text6").style.color = "red";
-
-		id("text3").style.fontSize = "x-large";
-		id("text4").style.fontSize = "x-large";
-		id("text5").style.fontSize = "x-large";
-		id("text6").style.fontSize = "x-large";
 		
+	// Score under 10	
 	} else if (score < 10) {
+
 		document.body.style.backgroundImage = "url('../images/sad.png')";
 
 		var resultTextz = document.getElementById("text5");
+			resultTextz.innerHTML = "Is the score below 10? You've done poorly."
 
-		resultTextz.innerHTML = "Is the score below 10? You've done poorly."
-
-		id("text3").style.fontSize = "x-large";
-		id("text4").style.fontSize = "x-large";
-		id("text5").style.fontSize = "x-large";
-		id("text6").style.fontSize = "x-large";
-
+	// Score equal to 10
 	} else if (score == 10) {
+
 		document.body.style.backgroundImage = "url('../images/neutral.png')";
 
 		var resultTexta = document.getElementById("text6");
-		resultTexta.innerHTML = "Is the score 10 on the dot? Well you could've done nothing else to change that."
-
-		id("text3").style.fontSize = "x-large";
-		id("text4").style.fontSize = "x-large";
-		id("text5").style.fontSize = "x-large";
-		id("text6").style.fontSize = "x-large";
+			resultTexta.innerHTML = "Is the score 10 on the dot? Well you could've done nothing else to change that."
 	}
 }
 
 // Reload the page when pressing the "Reset" button
-
 reset.onclick = function reset() {
 	location.reload();
 }
