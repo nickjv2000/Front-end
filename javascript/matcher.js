@@ -1,19 +1,18 @@
 // Id variable made smaller from document.getelementbyid to id
-var id = function(id) {return document.getElementById(id);};
-
 // Creating variables where random numbers are being generated
+//
+var id = function(id) {return document.getElementById(id);};
 var randoms = Math.floor(Math.random() * games.length);
 var score = 10;
-var div = document.createElement('div');
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 
 // giving id's bt1, bt2 and bt3 a const to link with a function
+// hides finish button
 const start = id("bt1");
 const reset = id("bt2");
 const finish = id("bt3");
 
-// hides finish button
 finish.style.visibility = "hidden";
 
 // Creates random numbers
@@ -44,23 +43,23 @@ function visibleElements() {
 // Start the matching game
 // Apply the function visibleElements
 // create a variable for the container div
+// Create a card group to put the divs in
 start.onclick = function start() {
 
 	visibleElements();
 
 	var containerDiv = document.getElementById("containers");
 
-	// Create a card group to put the divs in
 	var div0 = document.createElement("div");
 		div0.className = "card-group";
 
 	for (u = 0; u < games.length; u++) {
 
 		// Apply a random number to the variables
+		// Create divs and buttons
 		randomNumberName = generateNumberName();
 		randomNumberImage = generateNumberImage();
 	
-		// Create divs and buttons
 		var div1 = document.createElement("div");
 			div1.className = "card";
 
@@ -73,14 +72,12 @@ start.onclick = function start() {
 			btn.innerHTML = games[randomNumberName].name;
 
 		// Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container
+		// Remove numbers from the games array
 		div1.appendChild(div2);
-
-		// Add 
 		div1.appendChild(btn);
 		div0.appendChild(div1);
 		containerDiv.appendChild(div0);	
-
-		// Remove numbers from the games array
+	
 		spliceName.splice(games.name, 1);	
 		spliceImage.splice(games.image, 1);
 		
@@ -94,9 +91,9 @@ start.onclick = function start() {
 }
 
 // A function that loads the last page of the website
+// Removes any buttons/text that was made prior to the result screen
 finish.onclick = function finish() {
 
-// Removes any buttons/text that was made prior to the result screen
 	id("dropdown").remove();
 	id("text1").remove();
 	id("text2").remove();
