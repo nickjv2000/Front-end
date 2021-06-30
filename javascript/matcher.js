@@ -3,7 +3,6 @@ Id variable made smaller from document.getelementbyid to id
 Creating variables where random numbers are being generated
 */
 var id = function(id) {return document.getElementById(id);};
-var randoms = Math.floor(Math.random() * games.length);
 var score = 10;
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -19,7 +18,7 @@ const finish = id("bt3");
 finish.style.visibility = "hidden";
 
 // Creates random number
-function GenerateNumberByArray(Array){
+function generateNumberByArray(Array){
 	var index = Math.floor(Math.random() * Array.length);
 	var returnValue = Array[index];
 	Array.splice(index, 1);
@@ -57,14 +56,14 @@ start.onclick = function start() {
 	var div0 = document.createElement("div");
 		div0.className = "card-group";
 
-	for (u = 0; u < games.length; u++) {
+	for (let u = 0; u < games.length; u++) {
 
 		/* 
 		Apply a random number to the variables
 		Create divs and buttons 
 		*/
-		randomNumberName = GenerateNumberByArray(spliceName);
-		randomNumberImage = GenerateNumberByArray(spliceImage);
+		randomNumberName = generateNumberByArray(spliceName);
+		randomNumberImage = generateNumberByArray(spliceImage);
 	
 		var div1 = document.createElement("div");
 			div1.className = "card";
