@@ -2,7 +2,7 @@ var games = [
 	{name:"Among us ", 	image:"../images/among.jpg"},
 	{name:"Apex ",		image:"../images/apex.jpg"},
 	{name:"CS:GO ",		image:"../images/csgo.jpg"},
-	{name:"Fortnite ",	image:"../images/GTA.jpg"},
+	{name:"Fortnite ",	image:"../images/fortnite.jpg"},
 	{name:"GTA ",		image:"../images/GTA.jpg"},
 	{name:"LoL ",		image:"../images/LoL.jpg"},
 	{name:"MC ",		image:"../images/minecraft.jpg"},
