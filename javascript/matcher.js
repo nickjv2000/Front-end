@@ -1,27 +1,29 @@
-// Id variable made smaller from document.getelementbyid to id
-// Creating variables where random numbers are being generated
-//
+/*
+Id variable made smaller from document.getelementbyid to id
+Creating variables where random numbers are being generated
+*/
 var id = function(id) {return document.getElementById(id);};
 var randoms = Math.floor(Math.random() * games.length);
 var score = 10;
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 
-// giving id's bt1, bt2 and bt3 a const to link with a function
-// hides finish button
+/*
+giving id's bt1, bt2 and bt3 a const to link with a function
+hides finish button
+*/
 const start = id("bt1");
 const reset = id("bt2");
 const finish = id("bt3");
 
 finish.style.visibility = "hidden";
 
-// Creates random numbers
-function generateNumberName() {
-	return Math.floor(Math.random() * games.length);
-}
-
-function generateNumberImage() {
-	return Math.floor(Math.random() * games.length);
+// Creates random number
+function GenerateNumberByArray(Array){
+	var index = Math.floor(Math.random() * Array.length);
+	var returnValue = Array[index];
+	Array.splice(index, 1);
+	return returnValue;
 }
 
 // Making the elements invisible
@@ -40,10 +42,12 @@ function visibleElements() {
 	start.remove();
 }
 
-// Start the matching game
-// Apply the function visibleElements
-// create a variable for the container div
-// Create a card group to put the divs in
+/*
+Start the matching game
+Apply the function visibleElements
+create a variable for the container div
+Create a card group to put the divs in
+*/
 start.onclick = function start() {
 
 	visibleElements();
@@ -55,10 +59,12 @@ start.onclick = function start() {
 
 	for (u = 0; u < games.length; u++) {
 
-		// Apply a random number to the variables
-		// Create divs and buttons
-		randomNumberName = generateNumberName();
-		randomNumberImage = generateNumberImage();
+		/* 
+		Apply a random number to the variables
+		Create divs and buttons 
+		*/
+		randomNumberName = GenerateNumberByArray(spliceName);
+		randomNumberImage = GenerateNumberByArray(spliceImage);
 	
 		var div1 = document.createElement("div");
 			div1.className = "card";
@@ -71,27 +77,28 @@ start.onclick = function start() {
 			btn.className = "btn btn-dark";
 			btn.innerHTML = games[randomNumberName].name;
 
-		// Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container
-		// Remove numbers from the games array
+		/*
+		Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container
+		Remove numbers from the games array
+		*/
 		div1.appendChild(div2);
 		div1.appendChild(btn);
 		div0.appendChild(div1);
 		containerDiv.appendChild(div0);	
 	
-		spliceName.splice(games.name, 1);	
-		spliceImage.splice(games.image, 1);
-		
 		// Apply scores by clicking on the names
-		if(randomName == randomImage) {
+		if(randomNumberName == randomNumberImage) {
 			btn.onclick = function(){score += 1};
-		} else if(randomName != randomImage) {
+		} else if(randomNumberName != randomNumberImage) {
 			btn.onclick = function(){score -= 1};
 		}
 	}	
 }
 
-// A function that loads the last page of the website
-// Removes any buttons/text that was made prior to the result screen
+/*
+A function that loads the last page of the website
+Removes any buttons/text that was made prior to the result screen
+*/
 finish.onclick = function finish() {
 
 	id("dropdown").remove();
