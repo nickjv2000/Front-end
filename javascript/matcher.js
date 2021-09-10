@@ -12,6 +12,7 @@ var textScoreResultStat = false;
 var finishScore = 0;
 var timeleft = 10;
 var settingsUsed = false;
+var startedGame = false;
 document.body.style.backgroundImage = "url('../images/start.gif')";
 /*
 giving id's bt1, bt2 and bt3 a const to link with a function
@@ -59,6 +60,7 @@ function start() {
 	visibleElements();
 	timerStart();
 
+	startedGame = true;
 	textScoreResultStat = false;
 
 	var cardGroupDiv = document.createElement("div");
@@ -119,7 +121,7 @@ function finish() {
 
 	textCreateFinish();
 
-
+	startedGame = false;
 	textScoreResultStat = true;
 	finishScore += 1;
 	historyScore = true;
@@ -230,6 +232,15 @@ function settings() {
  	changeTimer.className = "mx-auto d-block";
   	changeTimer.setAttribute("type", "text");
   	document.body.appendChild(changeTimer);
+
+  	if (startedGame == true) {
+  		for (let u = 0; u < 11; u++) {
+  			document.getElementById("cardId").remove();
+  			document.getElementById("imgId").remove();
+  			document.getElementById("gameBtn").remove();
+  		}
+  		document.getElementById("cardGroup").remove();
+  	}
 }
 
 function timerStart() {
@@ -299,28 +310,28 @@ function createTextSettings() {
 }
 
 var startGame = document.createElement("button");
-startGame.className = "btn btn-dark mx-auto d-block";
-startGame.innerHTML = "Start";
-startGame.style.display = "none";
-document.body.appendChild(startGame);
-startGame.onclick = function() {start()};
+	startGame.className = "btn btn-dark mx-auto d-block";
+	startGame.innerHTML = "Start";
+	startGame.style.display = "none";
+	document.body.appendChild(startGame);
+	startGame.onclick = function() {start()};
 
-settingsGame = document.createElement("button");
-settingsGame.className = "btn btn-dark mx-auto d-block";
-settingsGame.innerHTML = "Settings";
-document.body.appendChild(settingsGame);
-settingsGame.onclick = function() {settings()};
+var settingsGame = document.createElement("button");
+	settingsGame.className = "btn btn-dark mx-auto d-block";
+	settingsGame.innerHTML = "Settings";
+	document.body.appendChild(settingsGame);
+	settingsGame.onclick = function() {settings()};
 
 var historyGameBtn = document.createElement("button");
-historyGameBtn.className = "btn btn-dark mx-auto d-block";
-historyGameBtn.innerHTML = "History";
-historyGameBtn.disabled = true;
-document.body.appendChild(historyGameBtn);
-historyGameBtn.onclick = function() {historyMatches()};
+	historyGameBtn.className = "btn btn-dark mx-auto d-block";
+	historyGameBtn.innerHTML = "History";
+	historyGameBtn.disabled = true;
+	document.body.appendChild(historyGameBtn);
+	historyGameBtn.onclick = function() {historyMatches()};
 
-resetGame = document.createElement("button");
-resetGame.className = "btn btn-dark mx-auto d-block";
-resetGame.innerHTML = "Reset";
-resetGame.disabled = true;
-document.body.appendChild(resetGame);
-resetGame.onclick = function() {reset()};
+var resetGame = document.createElement("button");
+	resetGame.className = "btn btn-dark mx-auto d-block";
+	resetGame.innerHTML = "Reset";
+	resetGame.disabled = true;
+	document.body.appendChild(resetGame);
+	resetGame.onclick = function() {reset()};
