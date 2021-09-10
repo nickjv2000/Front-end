@@ -8,4 +8,3 @@ id("dropdown").style.visibility = "hidden";
 
 id("text1").style.visibility = "hidden";
 id("text2").style.visibility = "hidden";
-id("bt2").style.visibility = "hidden";
