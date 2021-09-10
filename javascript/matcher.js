@@ -39,6 +39,8 @@ function visibleElements() {
 
 	resetGameBtn.disabled = false;
 	startGame.disabled = true;
+	historyGameBtn.disabled = true;
+	settingsGameBtn.disabled = true;
 
 	if (settingsUsed == true) {
 		settingsTextTitle.remove();
