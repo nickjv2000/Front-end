@@ -1,6 +1,7 @@
 /*
-Id variable made smaller from document.getelementbyid to id
-Creating variables where random numbers are being generated
+Id variable made smaller from document.getelementbyid to id.
+Creating variables where random numbers are being generated.
+Creating multitude of variables for functions.
 */
 var id = function(id) {return document.getElementById(id);};
 var score = 10;
@@ -10,18 +11,15 @@ var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
 var finishScore = 0;
-var timeleft = 10;
+var timer = 10;
+var timeleft = timer;
 var settingsUsed = false;
 var startedGame = false;
 document.body.style.backgroundImage = "url('../images/start.gif')";
-/*
-giving id's bt1, bt2 and bt3 a const to link with a function
-hides finish button
-*/
 
 var containerDiv = document.getElementById("containers");
 
-// Creates random number
+// Creates random number.
 function generateNumberByArray(Array){
 
 	var index = Math.floor(Math.random() * Array.length);
@@ -30,7 +28,7 @@ function generateNumberByArray(Array){
 	return returnValue;
 }
 
-// Making the elements invisible
+// Making the elements invisible.
 function visibleElements() {
 
 	document.body.style.backgroundImage = "none";
@@ -39,7 +37,7 @@ function visibleElements() {
 	id("text1").style.visibility = "visible";
 	id("text2").style.visibility = "visible";
 
-	resetGame.disabled = false;
+	resetGameBtn.disabled = false;
 	startGame.disabled = true;
 
 	if (settingsUsed == true) {
@@ -50,16 +48,17 @@ function visibleElements() {
 }	
 
 /*
-Start the matching game
-Apply the function visibleElements
-create a variable for the container div
-Create a card group to put the divs in
+Start the matching game.
+Apply the function visibleElements.
+Create a variable for the container div.
+Create a card group to put the divs in.
 */
 function start() {
 
 	visibleElements();
 	timerStart();
 
+	settingsGameBtn.disabled = true;
 	startedGame = true;
 	textScoreResultStat = false;
 
@@ -70,8 +69,8 @@ function start() {
 	for (let u = 0; u < games.length; u++) {
 
 		/* 
-		Apply a random number to the variables
-		Create divs and buttons 
+		Apply a random number to the variables.
+		Create divs and buttons.
 		*/
 		randomNumberName = generateNumberByArray(spliceName);
 		randomNumberImage = generateNumberByArray(spliceImage);
@@ -91,15 +90,15 @@ function start() {
 			gameBtn.id = "gameBtn"
 
 		/*
-		Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container
-		Remove numbers from the games array
+		Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container.
+		Remove numbers from the games array.
 		*/
 		cardDiv.appendChild(imgDiv);
 		cardDiv.appendChild(gameBtn);
 		cardGroupDiv.appendChild(cardDiv);
 		containerDiv.appendChild(cardGroupDiv);	
 	
-		// Apply scores by clicking on the names
+		// Apply scores by clicking on the names.
 		if(randomNumberName == randomNumberImage) {
 			gameBtn.onclick = function(){
 				score += 1;
@@ -114,13 +113,14 @@ function start() {
 }
 
 /*
-A function that loads the last page of the website
-Removes any buttons/text that was made prior to the result screen
+A function that loads the last page of the website.
+Removes any buttons/text that was made prior to the result screen.
 */
 function finish() {
 
 	textCreateFinish();
 
+	settingsGameBtn.disabled = false;
 	startedGame = false;
 	textScoreResultStat = true;
 	finishScore += 1;
@@ -144,20 +144,20 @@ function finish() {
 
   	document.getElementById("cardGroup").remove();
   	
-// Showing the results of the game
-	// Score higher than 10
+/*  Showing the results of the game.
+	Score higher than 10. */
 	if (score > 10){
 
 		document.body.style.backgroundImage = "url('../images/happy.gif')";
 			textResult.innerHTML = "You've gotten a score above 10, congratulations you've done very well!";
 		
-	// Score under 10	
+	// Score under 10.
 	} else if (score < 10) {
 
 		document.body.style.backgroundImage = "url('../images/sad.png')";
 			textResult.innerHTML = "A score below 10...? How did you even manage that."
 
-	// Score equal to 10
+	// Score equal to 10.
 	} else if (score == 10) {
 
 		document.body.style.backgroundImage = "url('../images/neutral.png')";
@@ -166,24 +166,26 @@ function finish() {
  	startGameChanges();
 }
 
+// Removes any texts added in Finish(), resets the display of elements and runs the function start().
 function continueGame() {
 
 	statRemoval();
 
 	id("countdown").style.display = "";
-	id("containers").style.display = "";	
+	id("containers").style.display = "";
 	id("dropdown").style.display = "";
 	id("text1").style.display = "";
 	id("text2").style.display = "";
+
 	start();
 }
 
-// Reload the page when pressing the "Reset" button
+// Reload the page when pressing the "Reset" button.
 function reset() {
 	location.reload();
 }
 
-// Load the history of the past 10 matches
+// Load the history of the past 10 matches.
 function historyMatches() {
 
 	document.body.style.backgroundImage = "none";
@@ -192,25 +194,40 @@ function historyMatches() {
 
 	textScoreResultStat = false;
 	startGame.disabled = false;
-	resetGame.disabled = true;
+	resetGameBtn.disabled = false;
 	historyGameBtn.disabled = true;
+	settingsGameBtn.disabled = false;
 
 	id("containers").style.display = "none";	
 	id("dropdown").style.display = "none";
 	id("text1").style.display = "none";
 	id("text2").style.display = "none";
+
+	if (settingsUsed == true) {
+		settingsTextTitle.remove();
+		changeTimerText.remove();
+		changeTimer.remove();
+	}
 }
 
+/* Call on a page where u can set settings such as a timer.
+   Removes a bunch of added texts, applies changes to the start button
+   changes tp buttons and the background.
+   Creates texts purely to change the settings. 
+*/
 function settings() {
 
+	statRemoval();
 	startGameChanges();
 
 	startGame.innerHTML = "Start";
 
 	settingsUsed = true;
-	settingsGame.disabled = true;
+	settingsGameBtn.disabled = true;
+	historyGameBtn.disabled = false;
+	resetGameBtn.disabled = false;
 
-
+	id("countdown").style.display = "none";
 	id("containers").style.display = "none";	
 	id("dropdown").style.display = "none";
 	id("text1").style.display = "none";
@@ -218,15 +235,11 @@ function settings() {
 
 	textScoreResultStat = false;
 	startGame.disabled = false;
-	resetGame.disabled = true;
-	historyGameBtn.disabled = true;
 
 	document.body.style.backgroundImage = "none";
 
 	statRemoval();
 	createTextSettings();
-
-	timeleft = id("changeTimerText").value;
 
  	changeTimer = document.createElement("INPUT");
  	changeTimer.className = "mx-auto d-block";
@@ -243,6 +256,7 @@ function settings() {
   	}
 }
 
+// A timer that countsdown from 10 to 0 and then calls on the finish() function.
 function timerStart() {
 	
 	var gameTimer = setInterval(function(){
@@ -257,6 +271,7 @@ function timerStart() {
 	}, 1000);
 }
 
+// Text for the function finish().
 function textCreateFinish() {
 	
 	var textResult = document.createElement("P");
@@ -275,6 +290,7 @@ function textCreateFinish() {
   	document.body.appendChild(textScoreResult);
 }
 
+// Changes to the button Start.
 function startGameChanges() {
 	
 	startGame.style.visibility = "visible";
@@ -283,6 +299,7 @@ function startGameChanges() {
 	startGame.onclick = function() {continueGame()};
 }
 
+// Removal of texts created in the function finish().
 function statRemoval() {
 
 	if (textScoreResultStat == true) {
@@ -291,6 +308,7 @@ function statRemoval() {
 	}
 }
 
+// Text created for the settings page.
 function createTextSettings() {
 
 	settingsTextTitle = document.createElement("p");
@@ -309,6 +327,7 @@ function createTextSettings() {
 	document.body.appendChild(changeTimerText);
 }
 
+// All main buttons created at the start.
 var startGame = document.createElement("button");
 	startGame.className = "btn btn-dark mx-auto d-block";
 	startGame.innerHTML = "Start";
@@ -316,11 +335,11 @@ var startGame = document.createElement("button");
 	document.body.appendChild(startGame);
 	startGame.onclick = function() {start()};
 
-var settingsGame = document.createElement("button");
-	settingsGame.className = "btn btn-dark mx-auto d-block";
-	settingsGame.innerHTML = "Settings";
-	document.body.appendChild(settingsGame);
-	settingsGame.onclick = function() {settings()};
+var settingsGameBtn = document.createElement("button");
+	settingsGameBtn.className = "btn btn-dark mx-auto d-block";
+	settingsGameBtn.innerHTML = "Settings";
+	document.body.appendChild(settingsGameBtn);
+	settingsGameBtn.onclick = function() {settings()};
 
 var historyGameBtn = document.createElement("button");
 	historyGameBtn.className = "btn btn-dark mx-auto d-block";
@@ -329,9 +348,9 @@ var historyGameBtn = document.createElement("button");
 	document.body.appendChild(historyGameBtn);
 	historyGameBtn.onclick = function() {historyMatches()};
 
-var resetGame = document.createElement("button");
-	resetGame.className = "btn btn-dark mx-auto d-block";
-	resetGame.innerHTML = "Reset";
-	resetGame.disabled = true;
-	document.body.appendChild(resetGame);
-	resetGame.onclick = function() {reset()};
+var resetGameBtn = document.createElement("button");
+	resetGameBtn.className = "btn btn-dark mx-auto d-block";
+	resetGameBtn.innerHTML = "Reset";
+	resetGameBtn.disabled = true;
+	document.body.appendChild(resetGameBtn);
+	resetGameBtn.onclick = function() {reset()};
