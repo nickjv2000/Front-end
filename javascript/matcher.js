@@ -46,6 +46,7 @@ function visibleElements() {
 		settingsTextTitle.remove();
 		changeTimerText.remove();
 		changeTimer.remove();
+		extraTimerText.remove();
 	}
 }	
 
@@ -59,6 +60,10 @@ function start() {
 
 	visibleElements();
 	timerStart();
+
+	if(timeleft <= 0){
+		finish();
+	}
 
 	settingsGameBtn.disabled = true;
 	startedGame = true;
@@ -209,6 +214,7 @@ function historyMatches() {
 		settingsTextTitle.remove();
 		changeTimerText.remove();
 		changeTimer.remove();
+		extraTimerText.remove();
 	}
 }
 
@@ -266,6 +272,7 @@ function timerStart() {
     	clearInterval(gameTimer);
     	document.getElementById("countdown").innerHTML = "Finished";
     	finish();
+    	timeleft = 10;
   	} else {
     	document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
   	}
@@ -280,6 +287,7 @@ function textCreateFinish() {
   	textResult.style.fontSize = "x-large";
   	textResult.style.color = "red";
   	textResult.style.textAlign = "center";
+  	textResult.className = "mt-5"
   	textResult.id = "textResult";
   	document.body.appendChild(textResult);
 
@@ -327,6 +335,12 @@ function createTextSettings() {
 	changeTimerText.className = "mt-4";
 	changeTimerText.innerHTML = "Change the timer (currently " + timeleft + " seconds)";
 	document.body.appendChild(changeTimerText);
+	
+	extraTimerText = document.createElement("P");
+	extraTimerText.style.textAlign = "center";
+	extraTimerText.id = "extraSettingsText";
+	extraTimerText.innerHTML = "If you've already played 1 game, the timer might give a second lower than it is when it starts."
+	document.body.appendChild(extraTimerText);
 }
 
 // All main buttons created at the start.
