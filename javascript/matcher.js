@@ -11,10 +11,13 @@ var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
 var finishScore = 0;
-var timer = 10;
+var timer = 2;
 var timeleft = timer;
 var settingsUsed = false;
 var startedGame = false;
+var resultGame = [];
+var gamesPlayed = 0;
+var historyEnabled = false;
 document.body.style.backgroundImage = "url('../images/start.gif')";
 
 var containerDiv = document.getElementById("containers");
@@ -48,6 +51,10 @@ function visibleElements() {
 		changeTimer.remove();
 		extraTimerText.remove();
 	}
+
+	if (historyEnabled == true) {
+		historyText.style.visibility = "hidden";
+	}
 }	
 
 /*
@@ -68,6 +75,8 @@ function start() {
 	settingsGameBtn.disabled = true;
 	startedGame = true;
 	textScoreResultStat = false;
+
+	gamesPlayed += 1;
 
 	var cardGroupDiv = document.createElement("div");
 		cardGroupDiv.className = "card-group";
@@ -127,6 +136,10 @@ function finish() {
 
 	textCreateFinish();
 
+	for (var k = 0; k < gamesPlayed; ++k) {
+    	resultGame[k] = score;
+	}
+
 	settingsGameBtn.disabled = false;
 	startedGame = false;
 	textScoreResultStat = true;
@@ -183,6 +196,7 @@ function continueGame() {
 	id("dropdown").style.display = "";
 	id("text1").style.display = "";
 	id("text2").style.display = "";
+	score = 10;
 
 	start();
 }
@@ -194,6 +208,8 @@ function reset() {
 
 // Load the history of the past 10 matches.
 function historyMatches() {
+
+	historyEnabled = true;
 
 	document.body.style.backgroundImage = "none";
 
@@ -215,6 +231,15 @@ function historyMatches() {
 		changeTimerText.remove();
 		changeTimer.remove();
 		extraTimerText.remove();
+	}
+
+	for (var i = 0; i < gamesPlayed; ++i) {
+    	historyText = document.createElement("P");
+    	historyText.style.textAlign = "center";
+    	historyText.id = "historyText";
+    	historyText.className = "mt-2"
+    	historyText.innerHTML = resultGame[i];
+    	document.body.appendChild(historyText);
 	}
 }
 
@@ -272,7 +297,7 @@ function timerStart() {
     	clearInterval(gameTimer);
     	document.getElementById("countdown").innerHTML = "Finished";
     	finish();
-    	timeleft = 10;
+    	timeleft = timer;
   	} else {
     	document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
   	}
