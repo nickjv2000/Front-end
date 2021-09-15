@@ -4,23 +4,24 @@ Creating variables where random numbers are being generated.
 Creating multitude of variables for functions.
 */
 var id = function(id) {return document.getElementById(id);};
-var score = 10;
+var score = [10];
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
-var finishScore = 0;
-var timer = 2;
+var timer = 10;
 var timeleft = timer;
 var settingsUsed = false;
 var startedGame = false;
 var resultGame = [];
 var gamesPlayed = 0;
 var historyEnabled = false;
+var containerDiv = document.getElementById("containers");
+
 document.body.style.backgroundImage = "url('../images/start.gif')";
 
-var containerDiv = document.getElementById("containers");
+
 
 // Creates random number.
 function generateNumberByArray(Array){
@@ -53,7 +54,7 @@ function visibleElements() {
 	}
 
 	if (historyEnabled == true) {
-		historyText.style.visibility = "hidden";
+		historyTextDiv.remove();
 	}
 }	
 
@@ -116,9 +117,7 @@ function start() {
 	
 		// Apply scores by clicking on the names.
 		if(randomNumberName == randomNumberImage) {
-			gameBtn.onclick = function(){
-				score += 1;
-			};
+			gameBtn.onclick = function(){score += 1};
 		} else if(randomNumberName != randomNumberImage) {
 			gameBtn.onclick = function(){score -= 1};
 		}
@@ -136,14 +135,13 @@ function finish() {
 
 	textCreateFinish();
 
-	for (var k = 0; k < gamesPlayed; ++k) {
-    	resultGame[k] = score;
-	}
+// check that local storage is available
+
+	resultGame.push(score);
 
 	settingsGameBtn.disabled = false;
 	startedGame = false;
 	textScoreResultStat = true;
-	finishScore += 1;
 	historyScore = true;
 
 	id("countdown").style.display = "none";
@@ -196,13 +194,14 @@ function continueGame() {
 	id("dropdown").style.display = "";
 	id("text1").style.display = "";
 	id("text2").style.display = "";
-	score = 10;
+	score = [10];
 
 	start();
 }
 
 // Reload the page when pressing the "Reset" button.
 function reset() {
+
 	location.reload();
 }
 
@@ -233,13 +232,17 @@ function historyMatches() {
 		extraTimerText.remove();
 	}
 
+	historyTextDiv = document.createElement("div");
+	historyTextDiv.id = "historyTextContainer";
+	document.body.appendChild(historyTextDiv);
+
 	for (var i = 0; i < gamesPlayed; ++i) {
     	historyText = document.createElement("P");
     	historyText.style.textAlign = "center";
     	historyText.id = "historyText";
     	historyText.className = "mt-2"
     	historyText.innerHTML = resultGame[i];
-    	document.body.appendChild(historyText);
+    	historyTextDiv.appendChild(historyText);
 	}
 }
 
