@@ -10,7 +10,7 @@ var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
-var timer = 10;
+var timer = 5;
 var timeleft = timer;
 var settingsUsed = false;
 var startedGame = false;
@@ -247,7 +247,7 @@ function historyMatches() {
 
 	if(gamesPlayed > 10) {
 		gamesPlayed = 10;
-		historyText.remove();
+		id("scoretext1").remove();
 	}
 
 	for (var i = 0; i < gamesPlayed; ++i) {
@@ -255,6 +255,7 @@ function historyMatches() {
     	historyText.style.textAlign = "center";
     	historyText.id = "historyText";
     	historyText.className = "mt-2"
+    	historyText.id = "scoreText"[i]
     	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + Date().valueOf();
     	historyTextDiv.appendChild(historyText);
 	}
