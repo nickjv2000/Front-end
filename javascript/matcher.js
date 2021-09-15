@@ -4,7 +4,7 @@ Creating variables where random numbers are being generated.
 Creating multitude of variables for functions.
 */
 var id = function(id) {return document.getElementById(id);};
-var score = [10];
+var score = 0;
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 var cloneGames = games.slice();
@@ -122,6 +122,7 @@ function start() {
 			gameBtn.onclick = function(){score -= 1};
 		}
 	}
+
 	settingsUsed = false;
 	spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 	spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -163,23 +164,23 @@ function finish() {
   	document.getElementById("cardGroup").remove();
   	
 /*  Showing the results of the game.
-	Score higher than 10. */
-	if (score > 10){
+	Score higher than 0. */
+	if (score > 0){
 
 		document.body.style.backgroundImage = "url('../images/happy.gif')";
-			textResult.innerHTML = "You've gotten a score above 10, congratulations you've done very well!";
+			textResult.innerHTML = "You've gotten a score above 0, congratulations you've done very well!";
 		
-	// Score under 10.
-	} else if (score < 10) {
+	// Score under 0.
+	} else if (score < 0) {
 
 		document.body.style.backgroundImage = "url('../images/sad.png')";
-			textResult.innerHTML = "A score below 10...? How did you even manage that."
+			textResult.innerHTML = "A score below 0...? How did you even manage that."
 
-	// Score equal to 10.
-	} else if (score == 10) {
+	// Score equal to 0.
+	} else if (score == 0) {
 
 		document.body.style.backgroundImage = "url('../images/neutral.png')";
-			textResult.innerHTML = "10 on the dot, unlucky!"
+			textResult.innerHTML = "0 on the dot, unfortunate!"
 	}
  	startGameChanges();
 }
@@ -194,7 +195,7 @@ function continueGame() {
 	id("dropdown").style.display = "";
 	id("text1").style.display = "";
 	id("text2").style.display = "";
-	score = [10];
+	score = 0;
 
 	start();
 }
@@ -236,12 +237,25 @@ function historyMatches() {
 	historyTextDiv.id = "historyTextContainer";
 	document.body.appendChild(historyTextDiv);
 
+	historyTitleText = document.createElement("P");
+	historyTitleText.style.textAlign = "center"
+	historyTitleText.id = "historyTitleText";
+	historyTitleText.className = "mt-2"
+	historyTitleText.style.fontSize = "x-large";
+	historyTitleText.innerHTML = "The previous 10 scores you've reached (resets on page refresh/reset)"
+	historyTextDiv.appendChild(historyTitleText);
+
+	if(gamesPlayed > 10) {
+		gamesPlayed = 10;
+		historyText.remove();
+	}
+
 	for (var i = 0; i < gamesPlayed; ++i) {
     	historyText = document.createElement("P");
     	historyText.style.textAlign = "center";
     	historyText.id = "historyText";
     	historyText.className = "mt-2"
-    	historyText.innerHTML = resultGame[i];
+    	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + Date().valueOf();
     	historyTextDiv.appendChild(historyText);
 	}
 }
