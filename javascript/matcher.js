@@ -142,11 +142,12 @@ function finish() {
 	textScoreResultStat = true;
 	historyScore = true;
 
-	id("countdown").style.display = "none";
-	id("dropdown").style.display = "none";
-	id("text1").style.display = "none";
-	id("text2").style.display = "none";
-	id("containers").style.display = "none";
+	hideGen();
+	// id("countdown").style.display = "none";
+	// id("dropdown").style.display = "none";
+	// id("text1").style.display = "none";
+	// id("text2").style.display = "none";
+	// id("containers").style.display = "none";
 
   	if (historyScore = true) {
 		historyGameBtn.disabled = false;
@@ -249,11 +250,7 @@ function settings() {
 	historyGameBtn.disabled = false;
 	resetGameBtn.disabled = false;
 
-	id("countdown").style.display = "none";
-	id("containers").style.display = "none";	
-	id("dropdown").style.display = "none";
-	id("text1").style.display = "none";
-	id("text2").style.display = "none";
+	hideGen();
 
 	textScoreResultStat = false;
 	startGame.disabled = false;
@@ -431,7 +428,17 @@ function settingsInt() {
 		changeTimer.remove();
 		extraTimerText.remove();
 		settingsCreateDiv.remove();
+		settingsCreateDiv2.remove();
 	}
+}
+
+function hideGen() {
+
+	id("countdown").style.display = "none";
+	id("containers").style.display = "none";	
+	id("dropdown").style.display = "none";
+	id("text1").style.display = "none";
+	id("text2").style.display = "none";
 }
 
 // All main buttons created at the start.
