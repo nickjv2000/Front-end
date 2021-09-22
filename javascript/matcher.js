@@ -10,7 +10,7 @@ var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
-var timer = 5;
+var timer = 10;
 var timeleft = timer;
 var settingsUsed = false;
 var startedGame = false;
@@ -46,12 +46,7 @@ function visibleElements() {
 	historyGameBtn.disabled = true;
 	settingsGameBtn.disabled = true;
 
-	if (settingsUsed == true) {
-		settingsTextTitle.remove();
-		changeTimerText.remove();
-		changeTimer.remove();
-		extraTimerText.remove();
-	}
+	settingsUsed();
 
 	if (historyEnabled == true) {
 		historyTextDiv.remove();
@@ -134,7 +129,7 @@ Removes any buttons/text that was made prior to the result screen.
 */
 function finish() {
 
-	textCreateFinish();
+	createTextFinish();
 
 // check that local storage is available
 
@@ -209,6 +204,10 @@ function reset() {
 // Load the history of the past 10 matches.
 function historyMatches() {
 
+	if (historyEnabled == true) {
+		historyTextDiv.remove();
+	}
+
 	historyEnabled = true;
 
 	document.body.style.backgroundImage = "none";
@@ -226,29 +225,17 @@ function historyMatches() {
 	id("text1").style.display = "none";
 	id("text2").style.display = "none";
 
-	if (settingsUsed == true) {
-		settingsTextTitle.remove();
-		changeTimerText.remove();
-		changeTimer.remove();
-		extraTimerText.remove();
-	}
+	settingsUsed();
 
-	historyTextDiv = document.createElement("div");
-	historyTextDiv.id = "historyTextContainer";
-	document.body.appendChild(historyTextDiv);
-
-	historyTitleText = document.createElement("P");
-	historyTitleText.style.textAlign = "center"
-	historyTitleText.id = "historyTitleText";
-	historyTitleText.className = "mt-2"
-	historyTitleText.style.fontSize = "x-large";
-	historyTitleText.innerHTML = "The previous 10 scores you've reached (resets on page refresh/reset)"
-	historyTextDiv.appendChild(historyTitleText);
+	createTextHistory();
 
 	if(gamesPlayed > 10) {
 		gamesPlayed = 10;
 		id("scoretext1").remove();
 	}
+
+	var today = new Date();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
 	for (var i = 0; i < gamesPlayed; ++i) {
     	historyText = document.createElement("P");
@@ -256,7 +243,7 @@ function historyMatches() {
     	historyText.id = "historyText";
     	historyText.className = "mt-2"
     	historyText.id = "scoreText"[i]
-    	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + Date().valueOf();
+    	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + time;
     	historyTextDiv.appendChild(historyText);
 	}
 }
@@ -289,15 +276,7 @@ function settings() {
 
 	document.body.style.backgroundImage = "none";
 
-	statRemoval();
-	createTextSettings();
-
- 	changeTimer = document.createElement("INPUT");
- 	changeTimer.className = "mx-auto d-block";
-  	changeTimer.setAttribute("type", "text");
-  	document.body.appendChild(changeTimer);
-
-  	if (startedGame == true) {
+	if (startedGame == true) {
   		for (let u = 0; u < 11; u++) {
   			document.getElementById("cardId").remove();
   			document.getElementById("imgId").remove();
@@ -305,6 +284,13 @@ function settings() {
   		}
   		document.getElementById("cardGroup").remove();
   	}
+
+  	if (historyEnabled == true) {
+		historyTextDiv.remove();
+	}
+
+	statRemoval();
+	createTextSettings();
 }
 
 // A timer that countsdown from 10 to 0 and then calls on the finish() function.
@@ -324,7 +310,7 @@ function timerStart() {
 }
 
 // Text for the function finish().
-function textCreateFinish() {
+function createTextFinish() {
 	
 	var textResult = document.createElement("P");
   	textResult.style.fontSize = "x-large";
@@ -364,12 +350,15 @@ function statRemoval() {
 // Text created for the settings page.
 function createTextSettings() {
 
+	settingsCreateDiv = document.createElement("div");
+	document.body.appendChild(settingsCreateDiv);
+
 	settingsTextTitle = document.createElement("p");
 	settingsTextTitle.style.fontSize = "x-large";
 	settingsTextTitle.style.textAlign = "center";
 	settingsTextTitle.id = "settingsTitle";
 	settingsTextTitle.innerHTML = "Settings";
-	document.body.appendChild(settingsTextTitle);
+	settingsCreateDiv.appendChild(settingsTextTitle);
 
 	changeTimerText = document.createElement("P");
 	changeTimerText.style.fontSize = "x-large";
@@ -377,13 +366,49 @@ function createTextSettings() {
 	changeTimerText.id = "changeTimerText";
 	changeTimerText.className = "mt-4";
 	changeTimerText.innerHTML = "Change the timer (currently " + timeleft + " seconds)";
-	document.body.appendChild(changeTimerText);
+	settingsCreateDiv.appendChild(changeTimerText);
 	
 	extraTimerText = document.createElement("P");
 	extraTimerText.style.textAlign = "center";
 	extraTimerText.id = "extraSettingsText";
 	extraTimerText.innerHTML = "If you've already played 1 game, the timer might give a second lower than it is when it starts."
-	document.body.appendChild(extraTimerText);
+	settingsCreateDiv.appendChild(extraTimerText);
+
+ 	changeTimer = document.createElement("INPUT");
+ 	changeTimer.className = "mx-auto d-block";
+  	changeTimer.setAttribute("type", "text");
+  	settingsCreateDiv.appendChild(changeTimer);
+
+  	confirmChangeTimer = document.createElement("button");
+  	confirmChangeTimer.className = "btn btn-dark mx-auto d-block mt-2";
+  	confirmChangeTimer.innerHTML = "Confirm";
+  	settingsCreateDiv.appendChild(confirmChangeTimer);
+}
+
+function createTextHistory() {
+
+	historyTextDiv = document.createElement("div");
+	historyTextDiv.id = "historyTextContainer";
+	document.body.appendChild(historyTextDiv);
+
+	historyTitleText = document.createElement("P");
+	historyTitleText.style.textAlign = "center"
+	historyTitleText.id = "historyTitleText";
+	historyTitleText.className = "mt-2"
+	historyTitleText.style.fontSize = "x-large";
+	historyTitleText.innerHTML = "The previous 10 scores you've reached (resets on page refresh/reset)"
+	historyTextDiv.appendChild(historyTitleText);
+}
+
+function settingsUsed() {
+
+	if (settingsUsed == true) {
+		settingsTextTitle.remove();
+		changeTimerText.remove();
+		changeTimer.remove();
+		extraTimerText.remove();
+		settingsCreateDiv.remove();
+	}
 }
 
 // All main buttons created at the start.
