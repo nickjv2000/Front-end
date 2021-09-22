@@ -230,24 +230,6 @@ function historyMatches() {
 	settingsInt();
 
 	createTextHistory();
-
-	if(gamesPlayed > 10) {
-		gamesPlayed = 10;
-		id("scoretext1").remove();
-	}
-
-	var today = new Date();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-	for (var i = 0; i < gamesPlayed; ++i) {
-    	historyText = document.createElement("P");
-    	historyText.style.textAlign = "center";
-    	historyText.id = "historyText";
-    	historyText.className = "mt-2"
-    	historyText.id = "scoreText"[i]
-    	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + time;
-    	historyTextDiv.appendChild(historyText);
-	}
 }
 
 /* Call on a page where u can set settings such as a timer.
@@ -421,6 +403,24 @@ function createTextHistory() {
 	historyTitleText.style.fontSize = "x-large";
 	historyTitleText.innerHTML = "The previous 10 scores you've reached (resets on page refresh/reset)"
 	historyTextDiv.appendChild(historyTitleText);
+
+	if(gamesPlayed > 10) {
+		gamesPlayed = 10;
+		id("scoretext1").remove();
+	}
+
+	var today = new Date();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+	for (var i = 0; i < gamesPlayed; ++i) {
+    	historyText = document.createElement("P");
+    	historyText.style.textAlign = "center";
+    	historyText.id = "historyText";
+    	historyText.className = "mt-2"
+    	historyText.id = "scoreText"[i]
+    	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + time;
+    	historyTextDiv.appendChild(historyText);
+	}
 }
 
 function settingsInt() {
