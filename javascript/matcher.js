@@ -113,10 +113,10 @@ function start() {
 		// Apply scores by clicking on the names.
 		if(randomNumberName == randomNumberImage) {
 			gameBtn.onclick = function(){score += 1};
-			gameBtn.onclick = function(){imgDiv[randomNumberImage].style.visibility = "hidden"};
+			gameBtn.onclick = function(){cardDiv.style.visibility = "hidden"};
 		} else if(randomNumberName != randomNumberImage) {
 			gameBtn.onclick = function(){score -= 1};
-			gameBtn.onclick = function(){imgDiv[randomNumberImage].style.visibility = "hidden"};
+			gameBtn.onclick = function(){cardDiv.style.visibility = "hidden"};
 		}
 	}
 
