@@ -46,7 +46,7 @@ function visibleElements() {
 	historyGameBtn.disabled = true;
 	settingsGameBtn.disabled = true;
 
-	settingsUsed();
+	settingsInt();
 
 	if (historyEnabled == true) {
 		historyTextDiv.remove();
@@ -113,8 +113,10 @@ function start() {
 		// Apply scores by clicking on the names.
 		if(randomNumberName == randomNumberImage) {
 			gameBtn.onclick = function(){score += 1};
+			gameBtn.onclick = function(){imgDiv[randomNumberImage].style.visibility = "hidden"};
 		} else if(randomNumberName != randomNumberImage) {
 			gameBtn.onclick = function(){score -= 1};
+			gameBtn.onclick = function(){imgDiv[randomNumberImage].style.visibility = "hidden"};
 		}
 	}
 
@@ -225,7 +227,7 @@ function historyMatches() {
 	id("text1").style.display = "none";
 	id("text2").style.display = "none";
 
-	settingsUsed();
+	settingsInt();
 
 	createTextHistory();
 
@@ -400,7 +402,7 @@ function createTextHistory() {
 	historyTextDiv.appendChild(historyTitleText);
 }
 
-function settingsUsed() {
+function settingsInt() {
 
 	if (settingsUsed == true) {
 		settingsTextTitle.remove();
