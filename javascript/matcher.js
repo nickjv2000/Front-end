@@ -385,6 +385,27 @@ function createTextSettings() {
   	confirmChangeTimer.className = "btn btn-dark mx-auto d-block mt-2";
   	confirmChangeTimer.innerHTML = "Confirm";
   	settingsCreateDiv.appendChild(confirmChangeTimer);
+
+  	settingsCreateDiv2 = document.createElement("div");
+  	document.body.appendChild(settingsCreateDiv2);
+
+  	changeCardText = document.createElement("P");
+	changeCardText.style.textAlign = "center";
+	changeCardText.id = "changeCardText";
+	changeCardText.style.fontSize = "x-large";
+	changeCardText.className = "mt-4";
+	changeCardText.innerHTML = "Change the amount of images & buttons to match";
+	settingsCreateDiv2.appendChild(changeCardText);
+
+  	changeCardAmount = document.createElement("INPUT");
+  	changeCardAmount.className = "mx-auto d-block mt-2";
+  	changeCardAmount.setAttribute("type", "text");
+  	settingsCreateDiv2.appendChild(changeCardAmount);
+
+  	confirmChangeAmount = document.createElement("button");
+  	confirmChangeAmount.className = "btn btn-dark mx-auto d-block mt-2";
+  	confirmChangeAmount.innerHTML = "Confirm";
+  	settingsCreateDiv2.appendChild(confirmChangeAmount);
 }
 
 function createTextHistory() {
