@@ -4,8 +4,8 @@
 }
 
 .img {
-	width: 316px;
-	height: 300px;
+	width: 316px !important;
+	height: 300px !important;
 }
 
 .text3 {
