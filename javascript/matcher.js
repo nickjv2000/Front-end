@@ -35,7 +35,7 @@ function generateNumberByArray(Array){
 // Making the elements invisible.
 function visibleElements() {
 
-	document.body.style.backgroundImage = "none";
+	
 
 	id("dropdown").style.visibility = "visible";
 	id("text1").style.visibility = "visible";
@@ -68,6 +68,9 @@ function start() {
 		finish();
 	}
 
+	document.body.style.backgroundImage = "url('../images/main.png')";
+	document.body.style.backgroundPosition = "center center";
+
 	settingsGameBtn.disabled = true;
 	startedGame = true;
 	textScoreResultStat = false;
@@ -89,17 +92,17 @@ function start() {
 	
 		var cardDiv = document.createElement("div");
 			cardDiv.className = "card";
-			cardDiv.id = "cardId";
+			cardDiv.id = "cardId" + u;
 
 		var imgDiv = document.createElement("img");
 			imgDiv.className = "img";
 			imgDiv.src = games[randomNumberImage].image;
-			imgDiv.id = "imgId";
+			imgDiv.id = "imgId" + u;
 
 		var gameBtn = document.createElement("button");
 			gameBtn.className = "btn btn-dark";
 			gameBtn.innerHTML = games[randomNumberName].name;
-			gameBtn.id = "gameBtn"
+			gameBtn.id = "gameBtn" + u;
 
 		/*
 		Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container.
@@ -110,13 +113,15 @@ function start() {
 		cardGroupDiv.appendChild(cardDiv);
 		containerDiv.appendChild(cardGroupDiv);	
 	
-		// Apply scores by clicking on the names.
+		/*
+		Apply scores when clicking on button
+		Change picture to wrong or right when clicked on button
+		Remove button when button is clicked (WIP)
+		*/
 		if(randomNumberName == randomNumberImage) {
-			gameBtn.onclick = function(){score += 1};
-			gameBtn.onclick = function(){cardDiv.style.visibility = "hidden"};
+			gameBtn.onclick = function(){score += 1; id("cardId" + u).style.visibility = "hidden"};
 		} else if(randomNumberName != randomNumberImage) {
-			gameBtn.onclick = function(){score -= 1};
-			gameBtn.onclick = function(){cardDiv.style.visibility = "hidden"};
+			gameBtn.onclick = function(){score -= 1; id("cardId" + u).style.visibility = "hidden"};
 		}
 	}
 
@@ -154,9 +159,7 @@ function finish() {
 	}
 
   	for (let u = 0; u < 11; u++) {
-  		document.getElementById("cardId").remove();
-  		document.getElementById("imgId").remove();
-  		document.getElementById("gameBtn").remove();
+  		document.getElementById("cardId" + u).remove();
   	}
 
   	document.getElementById("cardGroup").remove();
@@ -272,6 +275,9 @@ function settings() {
 
 	statRemoval();
 	createTextSettings();
+
+	confirmChangeTimer.onclick = function(){};
+	confirmChangeAmount.onclick = function(){};
 }
 
 // A timer that countsdown from 10 to 0 and then calls on the finish() function.
