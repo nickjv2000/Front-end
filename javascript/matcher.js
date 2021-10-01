@@ -1,23 +1,24 @@
 /*
 Id variable made smaller from document.getelementbyid to id.
-Creating variables where random numbers are being generated.
-Creating multitude of variables for functions.
+Creating multitude of global variables for functions.
 */
 var id = function(id) {return document.getElementById(id);};
 var score = 0;
 var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
-var cloneGames = games.slice();
 var historyScore = false;
 var textScoreResultStat = false;
 var timer = 10;
-var timeleft = timer;
+var timeleft;
 var settingsUsed = false;
 var startedGame = false;
 var resultGame = [];
 var gamesPlayed = 0;
 var historyEnabled = false;
 var containerDiv = document.getElementById("containers");
+var maxImages = games.length;
+var mostFailed = [];
+var failEnabled = false;
 
 document.body.style.backgroundImage = "url('../images/start.gif')";
 
@@ -35,8 +36,6 @@ function generateNumberByArray(Array){
 // Making the elements invisible.
 function visibleElements() {
 
-	
-
 	id("dropdown").style.visibility = "visible";
 	id("text1").style.visibility = "visible";
 	id("text2").style.visibility = "visible";
@@ -50,6 +49,10 @@ function visibleElements() {
 
 	if (historyEnabled == true) {
 		historyTextDiv.remove();
+	}
+
+	if (failEnabled == true) {
+		failTextDiv.remove();
 	}
 }	
 
@@ -81,7 +84,7 @@ function start() {
 		cardGroupDiv.className = "card-group";
 		cardGroupDiv.id = "cardGroup";
 
-	for (let u = 0; u < games.length; u++) {
+	for (let u = 0; u < maxImages; u++) {
 
 		/* 
 		Apply a random number to the variables.
@@ -119,9 +122,17 @@ function start() {
 		Remove button when button is clicked (WIP)
 		*/
 		if(randomNumberName == randomNumberImage) {
-			gameBtn.onclick = function(){score += 1; id("cardId" + u).style.visibility = "hidden"};
+			gameBtn.onclick = function(){
+				score += 1; 
+				id("cardId" + u).style.visibility = "hidden";
+			}
 		} else if(randomNumberName != randomNumberImage) {
-			gameBtn.onclick = function(){score -= 1; id("cardId" + u).style.visibility = "hidden"};
+			gameBtn.onclick = function(event){
+				score -= 1;
+				id("cardId" + u).style.visibility = "hidden";
+				mostFailed.push(event.target.innerHTML);
+				console.log(event.target.innerHTML, mostFailed);
+			}
 		}
 	}
 
@@ -143,22 +154,18 @@ function finish() {
 	resultGame.push(score);
 
 	settingsGameBtn.disabled = false;
+	mostFailedBtn.disabled = false;
 	startedGame = false;
 	textScoreResultStat = true;
 	historyScore = true;
 
 	hideGen();
-	// id("countdown").style.display = "none";
-	// id("dropdown").style.display = "none";
-	// id("text1").style.display = "none";
-	// id("text2").style.display = "none";
-	// id("containers").style.display = "none";
 
   	if (historyScore = true) {
 		historyGameBtn.disabled = false;
 	}
 
-  	for (let u = 0; u < 11; u++) {
+  	for (let u = 0; u < maxImages; u++) {
   		document.getElementById("cardId" + u).remove();
   	}
 
@@ -189,7 +196,7 @@ function finish() {
 // Removes any texts added in Finish(), resets the display of elements and runs the function start().
 function continueGame() {
 
-	statRemoval();
+	scoreResultRemoval();
 
 	id("countdown").style.display = "";
 	id("containers").style.display = "";
@@ -214,17 +221,22 @@ function historyMatches() {
 		historyTextDiv.remove();
 	}
 
+	if (failEnabled == true) {
+		failTextDiv.remove();
+	}
+
 	historyEnabled = true;
 
 	document.body.style.backgroundImage = "none";
 
-	statRemoval();
+	scoreResultRemoval();
 
 	textScoreResultStat = false;
 	startGame.disabled = false;
 	resetGameBtn.disabled = false;
 	historyGameBtn.disabled = true;
 	settingsGameBtn.disabled = false;
+	mostFailedBtn.disabled = false;
 
 	id("containers").style.display = "none";	
 	id("dropdown").style.display = "none";
@@ -243,7 +255,7 @@ function historyMatches() {
 */
 function settings() {
 
-	statRemoval();
+	scoreResultRemoval();
 	startGameChanges();
 
 	startGame.innerHTML = "Start";
@@ -252,6 +264,7 @@ function settings() {
 	settingsGameBtn.disabled = true;
 	historyGameBtn.disabled = false;
 	resetGameBtn.disabled = false;
+	mostFailedBtn.disabled = false;
 
 	hideGen();
 
@@ -273,16 +286,49 @@ function settings() {
 		historyTextDiv.remove();
 	}
 
-	statRemoval();
+	if (failEnabled == true) {
+		failTextDiv.remove();
+	}
+
+	scoreResultRemoval();
 	createTextSettings();
 
-	confirmChangeTimer.onclick = function(){};
-	confirmChangeAmount.onclick = function(){};
+	// confirmChangeTimer.onclick = function(){};
+	// confirmChangeAmount.onclick = function(){};
+}
+
+function failedScores() {
+
+	if (failEnabled == true) {
+		failTextDiv.remove();
+	}
+
+	failEnabled = true;
+
+	settingsGameBtn.disabled = false;
+	mostFailedBtn.disabled = true;
+
+	scoreResultRemoval();
+	startGameChanges();
+
+	textScoreResultStat = false;
+
+	document.body.style.backgroundImage = "none";
+
+	if (historyEnabled == true) {
+		historyTextDiv.remove();
+	}
+
+	hideGen();
+	settingsInt();
+	createFailText();
+
 }
 
 // A timer that countsdown from 10 to 0 and then calls on the finish() function.
 function timerStart() {
-	
+
+	timeleft = timer;
 	var gameTimer = setInterval(function(){
   	if(timeleft <= 0){
     	clearInterval(gameTimer);
@@ -326,7 +372,7 @@ function startGameChanges() {
 }
 
 // Removal of texts created in the function finish().
-function statRemoval() {
+function scoreResultRemoval() {
 
 	if (textScoreResultStat == true) {
 		id("textScoreResult").remove();
@@ -369,6 +415,12 @@ function createTextSettings() {
   	confirmChangeTimer = document.createElement("button");
   	confirmChangeTimer.className = "btn btn-dark mx-auto d-block mt-2";
   	confirmChangeTimer.innerHTML = "Confirm";
+  	console.log(changeTimer, confirmChangeTimer);
+  	confirmChangeTimer.onclick = function(){
+  		timer = changeTimer.value; 
+  		alert("Time has been changed!");
+  	}
+
   	settingsCreateDiv.appendChild(confirmChangeTimer);
 
   	settingsCreateDiv2 = document.createElement("div");
@@ -390,6 +442,10 @@ function createTextSettings() {
   	confirmChangeAmount = document.createElement("button");
   	confirmChangeAmount.className = "btn btn-dark mx-auto d-block mt-2";
   	confirmChangeAmount.innerHTML = "Confirm";
+  	confirmChangeAmount.onclick = function(){
+  		maxImages = changeCardAmount.value;
+  		alert("Amount of images changed!"); 
+  	}
   	settingsCreateDiv2.appendChild(confirmChangeAmount);
 }
 
@@ -423,6 +479,24 @@ function createTextHistory() {
     	historyText.id = "scoreText"[i]
     	historyText.innerHTML = i + ". Your score was " + resultGame[i] + ", " + time;
     	historyTextDiv.appendChild(historyText);
+	}
+}
+
+function createFailText() {
+
+	failTextDiv = document.createElement("div");
+	failTextDiv.id = "failTextContainer";
+	document.body.appendChild(failTextDiv);
+
+	for (var i = 0; i < mostFailed.length; i++) {
+
+		failTitleText = document.createElement("P");
+		failTitleText.style.textAlign = "center"
+		failTitleText.id = "failTitleText" + [i];
+		failTitleText.className = "mt-2"
+		failTitleText.style.fontSize = "x-large";
+		failTitleText.innerHTML = mostFailed[i];
+		failTextDiv.appendChild(failTitleText);
 	}
 }
 
@@ -474,3 +548,10 @@ var resetGameBtn = document.createElement("button");
 	resetGameBtn.disabled = true;
 	document.body.appendChild(resetGameBtn);
 	resetGameBtn.onclick = function() {reset()};
+
+var mostFailedBtn = document.createElement("button");
+	mostFailedBtn.className = "btn btn-dark mx-auto d-block";
+	mostFailedBtn.innerHTML = "Most Failed";
+	mostFailedBtn.disabled = true;
+	document.body.appendChild(mostFailedBtn);
+	mostFailedBtn.onclick = function() {failedScores()};
