@@ -53,6 +53,7 @@ function visibleElements() {
 
 	if (failEnabled == true) {
 		failTextDiv.remove();
+		cardFailGroupDiv.remove();
 	}
 }	
 
@@ -77,12 +78,13 @@ function start() {
 	settingsGameBtn.disabled = true;
 	startedGame = true;
 	textScoreResultStat = false;
+	failEnabled = false;
 
 	gamesPlayed += 1;
 
 	var cardGroupDiv = document.createElement("div");
-		cardGroupDiv.className = "card-group";
-		cardGroupDiv.id = "cardGroup";
+		 cardGroupDiv.className = "card-group";
+		 cardGroupDiv.id = "cardGroup";
 
 	for (let u = 0; u < maxImages; u++) {
 
@@ -90,8 +92,11 @@ function start() {
 		Apply a random number to the variables.
 		Create divs and buttons.
 		*/
+
 		randomNumberName = generateNumberByArray(spliceName);
 		randomNumberImage = generateNumberByArray(spliceImage);
+
+		var audio = new Audio(games[randomNumberName].audio);
 	
 		var cardDiv = document.createElement("div");
 			cardDiv.className = "card";
@@ -106,6 +111,18 @@ function start() {
 			gameBtn.className = "btn btn-dark";
 			gameBtn.innerHTML = games[randomNumberName].name;
 			gameBtn.id = "gameBtn" + u;
+			gameBtn.dataset.id = randomNumberName;
+
+		var audioBtn = document.createElement("button");
+			audioBtn.className = "btn btn-dark";
+			audioBtn.innerHTML = "Audio " + games[randomNumberName].name;
+			audioBtn.id = "audioBtn" + u;
+			audioBtn.dataset.id = randomNumberName;
+			console.log(randomNumberName);
+			audioBtn.onclick = function() { 
+				audio.play();
+				console.log(audio, randomNumberName);
+			}
 
 		/*
 		Add "div2" to "div1", "btn" to "div1" and "div1" to "div0" so they show in container.
@@ -113,13 +130,14 @@ function start() {
 		*/
 		cardDiv.appendChild(imgDiv);
 		cardDiv.appendChild(gameBtn);
+		cardDiv.appendChild(audioBtn);
 		cardGroupDiv.appendChild(cardDiv);
 		containerDiv.appendChild(cardGroupDiv);	
 	
 		/*
 		Apply scores when clicking on button
 		Change picture to wrong or right when clicked on button
-		Remove button when button is clicked (WIP)
+		Remove button when button is clicked
 		*/
 		if(randomNumberName == randomNumberImage) {
 			gameBtn.onclick = function(){
@@ -129,13 +147,11 @@ function start() {
 		} else if(randomNumberName != randomNumberImage) {
 			gameBtn.onclick = function(event){
 				score -= 1;
-				id("cardId" + u).style.visibility = "hidden";
-				mostFailed.push(event.target.innerHTML);
-				console.log(event.target.innerHTML, mostFailed);
+				mostFailed.push(event.target.dataset.id);
+				console.log(event.target.dataset.id, mostFailed);
 			}
 		}
 	}
-
 	settingsUsed = false;
 	spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 	spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -158,6 +174,7 @@ function finish() {
 	startedGame = false;
 	textScoreResultStat = true;
 	historyScore = true;
+	failEnabled = false;
 
 	hideGen();
 
@@ -223,9 +240,11 @@ function historyMatches() {
 
 	if (failEnabled == true) {
 		failTextDiv.remove();
+		cardFailGroupDiv.remove();
 	}
 
 	historyEnabled = true;
+	failEnabled = false;
 
 	document.body.style.backgroundImage = "none";
 
@@ -259,7 +278,7 @@ function settings() {
 	startGameChanges();
 
 	startGame.innerHTML = "Start";
-
+	failenabled = false;
 	settingsUsed = true;
 	settingsGameBtn.disabled = true;
 	historyGameBtn.disabled = false;
@@ -288,6 +307,7 @@ function settings() {
 
 	if (failEnabled == true) {
 		failTextDiv.remove();
+		cardFailGroupDiv.remove();
 	}
 
 	scoreResultRemoval();
@@ -301,6 +321,7 @@ function failedScores() {
 
 	if (failEnabled == true) {
 		failTextDiv.remove();
+		cardFailGroupDiv.remove();
 	}
 
 	failEnabled = true;
@@ -484,19 +505,42 @@ function createTextHistory() {
 
 function createFailText() {
 
-	failTextDiv = document.createElement("div");
-	failTextDiv.id = "failTextContainer";
-	document.body.appendChild(failTextDiv);
+	var failTextDiv = document.createElement("div");
+		 failTextDiv.id = "failTextDiv";
+		 failTextDiv.className = "mx-auto d-block";
+		 document.body.appendChild(failTextDiv);
 
-	for (var i = 0; i < mostFailed.length; i++) {
+	var failTitleText = document.createElement("p");
+		 failTitleText.textAlign = "center";
+		 failTitleText.className = "h3";
+		 failTitleText.innerHTML = "The most failed buttons in recent games (if you've failed more in 1 game the first 3 show up)";
 
-		failTitleText = document.createElement("P");
-		failTitleText.style.textAlign = "center"
-		failTitleText.id = "failTitleText" + [i];
-		failTitleText.className = "mt-2"
-		failTitleText.style.fontSize = "x-large";
-		failTitleText.innerHTML = mostFailed[i];
+	var cardFailGroupDiv = document.createElement("div");
+	 	 cardFailGroupDiv.className = "card-group mx-auto mt-5";
+	 	 cardFailGroupDiv.id = "cardFailGroupDiv";
+	 	 ;
+
+	for (var i = 0; i < 3; i++) {
+
+		var cardFailDiv = document.createElement("div");
+			 cardFailDiv.className = "card";
+			 cardFailDiv.id = "cardFailId" + i;
+
+		var imgFailDiv = document.createElement("img");
+			 imgFailDiv.className = "img";
+			 imgFailDiv.src = games[mostFailed[i]].image; 
+			 imgFailDiv.id = "imgFailId" + i;
+
+		var gameFailText = document.createElement("p");
+			 gameFailText.className = "mx-auto mt-2 h5";
+			 gameFailText.innerHTML = games[mostFailed[i]].name;
+			 gameFailText.id = "gameFailText" + i;
+		
+		document.body.appendChild(cardFailGroupDiv)
 		failTextDiv.appendChild(failTitleText);
+		cardFailGroupDiv.appendChild(cardFailDiv);
+		cardFailDiv.appendChild(imgFailDiv);
+		cardFailDiv.appendChild(gameFailText);
 	}
 }
 
