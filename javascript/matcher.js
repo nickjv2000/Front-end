@@ -8,7 +8,7 @@ var spliceName = [0,1,2,3,4,5,6,7,8,9,10,11];
 var spliceImage = [0,1,2,3,4,5,6,7,8,9,10,11];
 var historyScore = false;
 var textScoreResultStat = false;
-var timer = 15;
+var timer = 5;
 var timeleft;
 var settingsUsed = false;
 var startedGame = false;
@@ -19,6 +19,10 @@ var containerDiv = document.getElementById("containers");
 var maxImages = games.length;
 var mostFailed = [];
 var failEnabled = false;
+var sorted = false;
+var textRemoved = false;
+var settingsName = ["settingsTextTitle", "changeTimerText", "extraTimerText"];
+var settingsId = ["settingsTextTitle", "changeTimerText", "extraTimerText"];
 
 document.body.style.backgroundImage = "url('../images/start.gif')";
 
@@ -46,15 +50,7 @@ function visibleElements() {
 	settingsGameBtn.disabled = true;
 
 	settingsInt();
-
-	if (historyEnabled == true) {
-		historyTextDiv.remove();
-	}
-
-	if (failEnabled == true) {
-		failTextDiv.remove();
-		cardFailGroupDiv.remove();
-	}
+	hideEnabled()
 }	
 
 /*
@@ -95,42 +91,44 @@ function start() {
 
 		randomNumberName = generateNumberByArray(spliceName);
 		randomNumberImage = generateNumberByArray(spliceImage);
+
+		var gameNms = ["cardDiv", "imgDiv", "gameBtn", "audioBtn"];
 	
-		var cardDiv = document.createElement("div");
-			cardDiv.className = "card";
-			cardDiv.id = "cardId" + u;
+		gameNms[0] = document.createElement("div");
+		gameNms[0].className = "card";
+		gameNms[0].id = "cardId" + u;
 
-		var imgDiv = document.createElement("img");
-			imgDiv.className = "img";
-			imgDiv.src = games[randomNumberImage].image;
-			imgDiv.id = "imgId" + u;
+		gameNms[1] = document.createElement("img");
+		gameNms[1].className = "img";
+		gameNms[1].src = games[randomNumberImage].image;
+		gameNms[1].id = "imgId" + u;
+ 
+		gameNms[2] = document.createElement("button");
+		gameNms[2].className = "btn btn-dark";
+		gameNms[2].innerHTML = games[randomNumberName].name;
+		gameNms[2].id = "gameBtn" + u;
+		gameNms[2].dataset.id = randomNumberName;
 
-		var gameBtn = document.createElement("button");
-			gameBtn.className = "btn btn-dark";
-			gameBtn.innerHTML = games[randomNumberName].name;
-			gameBtn.id = "gameBtn" + u;
-			gameBtn.dataset.id = randomNumberName;
+		gameNms[3] = document.createElement("button");
+		gameNms[3].className = "btn btn-dark";
+		gameNms[3].innerHTML = "Audio " + games[randomNumberName].name;
+		gameNms[3].id = "audioBtn" + u;
+		gameNms[3].dataset.id = randomNumberName;
+		gameNms[3].dataset.audio = games[randomNumberName].audio;
 
-		var audioBtn = document.createElement("button");
-			audioBtn.className = "btn btn-dark";
-			audioBtn.innerHTML = "Audio " + games[randomNumberName].name;
-			audioBtn.id = "audioBtn" + u;
-			audioBtn.dataset.id = randomNumberName;
-			audioBtn.dataset.audio = games[randomNumberName].audio;
-
-			audioBtn.onclick = function() {
-				var localAudio = new Audio(this.dataset.audio);
-				localAudio.play(); 
-			 }; 
+		gameNms[3].onclick = function() {
+			var localAudio = new Audio(this.dataset.audio);
+			localAudio.play(); 
+		}; 
 
 	/*
 		Appending divs to show up on the page.
 		Remove numbers from the games array.
 		*/
-		cardDiv.appendChild(imgDiv);
-		cardDiv.appendChild(gameBtn);
-		cardDiv.appendChild(audioBtn);
-		cardGroupDiv.appendChild(cardDiv);
+		gameNms[0].appendChild(gameNms[1]);
+		gameNms[0].appendChild(gameNms[2]);
+		gameNms[0].appendChild(gameNms[3]);
+		cardGroupDiv.appendChild(gameNms[0]);
 		containerDiv.appendChild(cardGroupDiv);	
 	
 		/*
@@ -139,12 +137,12 @@ function start() {
 		Remove button when button is clicked
 		*/
 		if(randomNumberName == randomNumberImage) {
-			gameBtn.onclick = function(){
+			gameNms[2].onclick = function(){
 				score += 1; 
 				id("cardId" + u).style.visibility = "hidden";
 			}
 		} else if(randomNumberName != randomNumberImage) {
-			gameBtn.onclick = function(event){
+			gameNms[2].onclick = function(event){
 				score -= 1;
 				if (mostFailed.some(e => e.id === event.target.dataset.id)) {
 					idIndex = mostFailed.findIndex((elem => elem.id === event.target.dataset.id));
@@ -152,7 +150,6 @@ function start() {
 				} else {
 					mostFailed.push( { id: event.target.dataset.id, amount: 1 } );
 				}
-				console.log(mostFailed, event.target.dataset.id);
 			}
 		}
 	}
@@ -236,14 +233,7 @@ function reset() {
 // Load the history of the past 10 matches.
 function historyMatches() {
 
-	if (historyEnabled == true) {
-		historyTextDiv.remove();
-	}
-
-	if (failEnabled == true) {
-		failTextDiv.remove();
-		cardFailGroupDiv.remove();
-	}
+	hideEnabled();
 
 	historyEnabled = true;
 	failEnabled = false;
@@ -294,37 +284,27 @@ function settings() {
 
 	document.body.style.backgroundImage = "none";
 
+	var gameNames = ["cardId", "imgId", "gameBtn"];
+
 	if (startedGame == true) {
   		for (let u = 0; u < 11; u++) {
-  			document.getElementById("cardId").remove();
-  			document.getElementById("imgId").remove();
-  			document.getElementById("gameBtn").remove();
+  			for (var i = 0; i < gameNames.length; i++) {
+  				Id(gameNames[i]).remove();
+  			}
   		}
   		document.getElementById("cardGroup").remove();
   	}
 
-  	if (historyEnabled == true) {
-		historyTextDiv.remove();
-	}
-
-	if (failEnabled == true) {
-		failTextDiv.remove();
-		cardFailGroupDiv.remove();
-	}
-
+  	hideEnabled();
 	scoreResultRemoval();
 	createTextSettings();
 }
 
 function failedScores() {
 
-	if (failEnabled == true) {
-		failTextDiv.remove();
-		cardFailGroupDiv.remove();
-	}
-
 	settingsGameBtn.disabled = false;
 	mostFailedBtn.disabled = true;
+	historyGameBtn.disabled = false;
 
 	scoreResultRemoval();
 	startGameChanges();
@@ -333,10 +313,7 @@ function failedScores() {
 
 	document.body.style.backgroundImage = "none";
 
-	if (historyEnabled == true) {
-		historyTextDiv.remove();
-	}
-
+	hideEnabled();
 	hideGen();
 	settingsInt();
 	createFailText();
@@ -366,29 +343,30 @@ function timerStart() {
 
 // Text for the function finish().
 function createTextFinish() {
-	
-	var textResult = document.createElement("P");
-  	textResult.style.fontSize = "x-large";
-  	textResult.style.color = "red";
-  	textResult.style.textAlign = "center";
-  	textResult.className = "mt-5"
-  	textResult.id = "textResult";
-  	document.body.appendChild(textResult);
 
-  	var textScoreResult = document.createElement("P");
-  	textScoreResult.style.fontSize = "x-large";
-  	textScoreResult.style.color = "red";
-  	textScoreResult.innerHTML = "Your score is: " + score;
-  	textScoreResult.style.textAlign = "center";
-  	textScoreResult.id = "textScoreResult";
-  	document.body.appendChild(textScoreResult);
+	var textResult = document.createElement("p");
+	textResult.style.fontSize = "x-large";
+	textResult.style.color = "red";
+	textResult.style.textAlign = "center";
+	textResult.className = "mt-5";
+	textResult.id = "textResult";
+	document.body.appendChild(textResult);
+
+	var textScoreResult = document.createElement("p");
+	textScoreResult.style.fontSize = "x-large";
+	textScoreResult.style.color = "red";
+	textScoreResult.style.textAlign = "center";
+	textScoreResult.className = "mt-5";
+	textScoreResult.innerHTML = "Your score is: " + score;
+	textScoreResult.id = "textScoreResult";
+	document.body.appendChild(textScoreResult);	
 }
 
 // Changes to the button Start.
 function startGameChanges() {
 	
 	startGame.style.visibility = "visible";
-	startGame.innerHTML = "Play Again";
+	startGame.innerHTML = "Start";
 	startGame.disabled = false;
 	startGame.onclick = function() {continueGame()};
 }
@@ -408,26 +386,18 @@ function createTextSettings() {
 	settingsCreateDiv = document.createElement("div");
 	document.body.appendChild(settingsCreateDiv);
 
-	settingsTextTitle = document.createElement("p");
-	settingsTextTitle.style.fontSize = "x-large";
-	settingsTextTitle.style.textAlign = "center";
-	settingsTextTitle.id = "settingsTextTitle";
-	settingsTextTitle.innerHTML = "Settings";
-	settingsCreateDiv.appendChild(settingsTextTitle);
+	for (var i = 0; i < settingsName.length; i++) {
+		settingsName[i] = document.createElement("p");
+		settingsName[i].style.textAlign = "center";
+		settingsName[i].style.fontSize = "x-large";
+		settingsName[i].id = settingsId[i];
+		settingsCreateDiv.appendChild(settingsName[i]);
+	}
 
-	changeTimerText = document.createElement("p");
-	changeTimerText.style.fontSize = "x-large";
-	changeTimerText.style.textAlign = "center";
-	changeTimerText.id = "changeTimerText";
-	changeTimerText.className = "mt-4";
-	changeTimerText.innerHTML = "Change the timer (currently " + timeleft + " seconds)";
-	settingsCreateDiv.appendChild(changeTimerText);
-
-	extraTimerText = document.createElement("P");
-	extraTimerText.style.textAlign = "center";
-	extraTimerText.id = "extraSettingsText";
-	extraTimerText.innerHTML = "If you've already played 1 game, the timer might give a second lower than it is when it starts."
-	settingsCreateDiv.appendChild(extraTimerText);
+	settingsName[0].innerHTML = "Settings";
+	settingsName[1].className = "mt-4";
+	settingsName[1].innerHTML = "Change the timer (currently " + timeleft + " seconds)";
+	settingsName[2].innerHTML = "If you've already played 1 game, the timer might give a second lower than it is when it starts."
 
  	changeTimer = document.createElement("INPUT");
  	changeTimer.className = "mx-auto d-block";
@@ -472,6 +442,8 @@ function createTextSettings() {
 
 function createTextHistory() {
 
+	var textRemoved = false;
+
 	historyTextDiv = document.createElement("div");
 	historyTextDiv.id = "historyTextContainer";
 	document.body.appendChild(historyTextDiv);
@@ -489,8 +461,6 @@ function createTextHistory() {
 		id("scoretext1").remove();
 	}
 
-	console.log(resultGame);
-
 	var btnName = ["sortScoreBtn", "sortDateBtn"];
 	var btnInnerHTML = ["Sort by Score", "Sort by Date"];
 	var btnId = ["sortScoreBtn", "sortDateBtn"]; 
@@ -503,28 +473,47 @@ function createTextHistory() {
 		historyTextDiv.appendChild(btnName[k]);
 	}
 
-	sortScoreBtn.onclick = function() {
-		console.log(resultGame);
-		resultGame.sort(function(a, b) {
-			return b.score - a.score
-		});
-	}
-
-	sortDateBtn.onclick = function() {
-		console.log(resultGame);
-		resultGame.sort(function(a, b) {
-			return b.score - a.score
-		});
-	}
-
 	for (var i = 0; i < gamesPlayed; ++i) {
-    	historyText = document.createElement("P");
-    	historyText.style.textAlign = "center";
-    	historyText.id = "historyText";
-    	historyText.className = "mt-2"
-    	historyText.id = "scoreText"[i]
-    	historyText.innerHTML = i + '. Score: ' + resultGame[i].score + '. Time: ' + resultGame[i].date;
-    	historyTextDiv.appendChild(historyText);
+		historyText = document.createElement("P");
+		historyText.id = "historyText" + i;
+		historyText.style.textAlign = "center";
+		historyText.className = "mt-2";
+		historyText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+		historyTextDiv.appendChild(historyText);
+	}
+
+	for (var v = 0; v < btnName.length; v++) {
+		btnName[v].onclick = function() {
+			resultGame.sort(function(a, b) {
+				return b.score - a.score
+			});
+
+			if (textRemoved == false) {
+				for (var m = 0; m < gamesPlayed; ++m){
+					id("historyText" + [m]).remove();
+				}
+				textRemoved = true;
+			} else if (textRemoved == true) {
+				textRemoved = 2;
+				for (var z = 0; z < gamesPlayed; ++z){
+					id("sortedHistoryText" + [z]).remove();
+				} 
+			} else if (textRemoved == 2) {
+				textRemoved = 2;
+				for (var z = 0; z < gamesPlayed; ++z){
+					id("sortedHistoryText" + [z]).remove();
+				} 
+			}
+
+			for (var i = 0; i < gamesPlayed; ++i) {
+				sortedHistoryText = document.createElement("P");
+				sortedHistoryText.id = "sortedHistoryText" + i;
+				sortedHistoryText.style.textAlign = "center";
+				sortedHistoryText.className = "mt-2";
+				sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+				historyTextDiv.appendChild(sortedHistoryText);
+			}
+		}
 	}
 }
 
@@ -547,7 +536,6 @@ function createFailText() {
 	 	 cardFailGroupDiv.className = "card-group mx-auto mt-5";
 	 	 cardFailGroupDiv.id = "cardFailGroupDiv";
 
-	 	console.log(mostFailed);
 	 	mostFailed.sort(function(a, b) {
   			return b.amount - a.amount;
 		});
@@ -579,10 +567,10 @@ function createFailText() {
 function settingsInt() {
 
 	if (settingsUsed == true) {
-		settingsTextTitle.remove();
-		changeTimerText.remove();
+		settingsName[0].remove();
+		settingsName[1].remove();
 		changeTimer.remove();
-		extraTimerText.remove();
+		settingsName[2].remove();
 		settingsCreateDiv.remove();
 		settingsCreateDiv2.remove();
 	}
@@ -595,6 +583,17 @@ function hideGen() {
 	id("dropdown").style.display = "none";
 	id("text1").style.display = "none";
 	id("text2").style.display = "none";
+}
+
+function hideEnabled() {
+	if (historyEnabled == true) {
+		historyTextDiv.remove();
+	}
+
+	if (failEnabled == true) {
+		failTextDiv.remove();
+		cardFailGroupDiv.remove();
+	}
 }
 
 // All main buttons created at the start.
