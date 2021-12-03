@@ -207,11 +207,12 @@ function continueGame() {
 
 	scoreResultRemoval();
 
-	id("countdown").style.display = "";
-	id("containers").style.display = "";
-	id("dropdown").style.display = "";
-	id("text1").style.display = "";
-	id("text2").style.display = "";
+	var gameGenNames = ["countdown", "containers", "dropdown", "text1", "text2"];
+
+	for (var i = 0; i < gameGenNames.length; i++) {
+		id(gameGenNames[i]).style.display = "";
+	}
+
 	score = 0;
 
 	start();
@@ -242,13 +243,13 @@ function historyMatches() {
 	settingsGameBtn.disabled = false;
 	mostFailedBtn.disabled = false;
 
-	id("containers").style.display = "none";	
-	id("dropdown").style.display = "none";
-	id("text1").style.display = "none";
-	id("text2").style.display = "none";
+	var gameNms1 = ["containers", "dropdown", "text1", "text2"];
+
+	for (var i = 0; i < gameNms1.length; i++) {
+		id(gameNms1[i]).style.display = "none";
+	}
 
 	settingsInt();
-
 	createTextHistory();
 }
 
@@ -567,8 +568,8 @@ function settingsInt() {
 	if (settingsUsed == true) {
 		settingsName[0].remove();
 		settingsName[1].remove();
-		changeTimer.remove();
 		settingsName[2].remove();
+		changeTimer.remove();
 		settingsCreateDiv.remove();
 		settingsCreateDiv2.remove();
 	}
