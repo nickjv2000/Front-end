@@ -26,8 +26,6 @@ var settingsId = ["settingsTextTitle", "changeTimerText", "extraTimerText"];
 
 document.body.style.backgroundImage = "url('../images/start.gif')";
 
-
-
 // Creates random number.
 function generateNumberByArray(Array){
 
@@ -158,8 +156,8 @@ function start() {
 }
 
 /*
-A function that loads the last page of the website.
-Removes any buttons/text that was made prior to the result screen.
+	A function that loads the last page of the website.
+	Removes any buttons/text that was made prior to the result screen.
 */
 function finish() {
 
@@ -184,26 +182,22 @@ function finish() {
 
   	document.getElementById("cardGroup").remove();
   	
- 
 //	Showing the results of the game.
 
 //	Score higher than 0. 
 	if (score > 0){
-
 		document.body.style.backgroundImage = "url('../images/happy.gif')";
-			textResult.innerHTML = "You've gotten a score above 0, congratulations you've done very well!";
+		textResult.innerHTML = "You've gotten a score above 0, congratulations you've done very well!";
 		
 	// Score under 0.
 	} else if (score < 0) {
-
 		document.body.style.backgroundImage = "url('../images/sad.png')";
-			textResult.innerHTML = "A score below 0...? How did you even manage that."
+		textResult.innerHTML = "A score below 0...? How did you even manage that."
 
 	// Score equal to 0.
 	} else if (score == 0) {
-
 		document.body.style.backgroundImage = "url('../images/neutral.png')";
-			textResult.innerHTML = "0 on the dot, unfortunate!"
+		textResult.innerHTML = "0 on the dot, unfortunate!"
 	}
  	startGameChanges();
 }
@@ -264,7 +258,6 @@ function historyMatches() {
    changes tp buttons and the background.
    Creates texts purely to change the settings. 
 */
-
 function settings() {
 
 	scoreResultRemoval();
@@ -615,16 +608,16 @@ for (var i = 0; i < mainBtnNames.length; i++) {
 	document.body.appendChild(mainBtnNames[i]);
 }
 
-	startGame.style.display = "none";
-	startGame.onclick = function() {start()};
+mainBtnNames[0].style.display = "none";
+mainBtnNames[0].onclick = function() {start()};
 
-	settingsGameBtn.onclick = function() {settings()};
+mainBtnNames[1].onclick = function() {settings()};
 
-	historyGameBtn.disabled = true;
-	historyGameBtn.onclick = function() {historyMatches()};
+mainBtnNames[2].disabled = true;
+mainBtnNames[2].onclick = function() {historyMatches()};
 
-	resetGameBtn.disabled = true;
-	resetGameBtn.onclick = function() {reset()};
+mainBtnNames[3].disabled = true;
+mainBtnNames[3].onclick = function() {reset()};
 
-	mostFailedBtn.disabled = true;
-	mostFailedBtn.onclick = function() {failedScores()};
+mainBtnNames[4].disabled = true;
+mainBtnNames[4].onclick = function() {failedScores()};
