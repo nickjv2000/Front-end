@@ -86,9 +86,8 @@ function start() {
 
 		/* 
 		Apply a random number to the variables.
-		Create divs and buttons.
+		Create divs, text and buttons.
 		*/
-
 		randomNumberName = generateNumberByArray(spliceName);
 		randomNumberImage = generateNumberByArray(spliceImage);
 
@@ -121,7 +120,7 @@ function start() {
 			localAudio.play(); 
 		}; 
 
-	/*
+		/*
 		Appending divs to show up on the page.
 		Remove numbers from the games array.
 		*/
@@ -165,8 +164,6 @@ Removes any buttons/text that was made prior to the result screen.
 function finish() {
 
 	createTextFinish();
-
-// check that local storage is available
 
 	settingsGameBtn.disabled = false;
 	mostFailedBtn.disabled = false;
@@ -259,11 +256,13 @@ function historyMatches() {
 	createTextHistory();
 }
 
-/* Call on a page where u can set settings such as a timer.
+/* 
+	Call on a page where u can set settings such as a timer.
    Removes a bunch of added texts, applies changes to the start button
    changes tp buttons and the background.
    Creates texts purely to change the settings. 
 */
+
 function settings() {
 
 	scoreResultRemoval();
@@ -299,6 +298,11 @@ function settings() {
 	scoreResultRemoval();
 	createTextSettings();
 }
+
+
+/*
+	Create a page with the 3 most failed buttons
+*/
 
 function failedScores() {
 
@@ -440,6 +444,7 @@ function createTextSettings() {
   	settingsCreateDiv2.appendChild(confirmChangeAmount);
 }
 
+// Text created for the history page.
 function createTextHistory() {
 
 	var textRemoved = false;
@@ -517,6 +522,7 @@ function createTextHistory() {
 	}
 }
 
+// Text created for the mostFailed page.
 function createFailText() {
 
 	var failTextDiv = document.createElement("div");
@@ -564,6 +570,7 @@ function createFailText() {
 	}
 }
 
+// removal of divs & text after using the settings page.
 function settingsInt() {
 
 	if (settingsUsed == true) {
@@ -576,15 +583,16 @@ function settingsInt() {
 	}
 }
 
+// Hiding generally used stuff
 function hideGen() {
 
-	id("countdown").style.display = "none";
-	id("containers").style.display = "none";	
-	id("dropdown").style.display = "none";
-	id("text1").style.display = "none";
-	id("text2").style.display = "none";
+	var genNames = ["countdown", "containers", "dropdown", "text1", "text2"];
+	for (var i = 0; i < genNames.length; i++) {
+		id(genNames[i]).style.display = "none";
+	}
 }
 
+// Hide divs used for History & mostFailed page.
 function hideEnabled() {
 	if (historyEnabled == true) {
 		historyTextDiv.remove();
@@ -596,8 +604,7 @@ function hideEnabled() {
 	}
 }
 
-// All main buttons created at the start.
-
+// All main buttons created for the start.
 var mainBtnNames = ["startGame", "settingsGameBtn", "historyGameBtn", "resetGameBtn", "mostFailedBtn"];
 var mainBtnHTML = ["Start", "Settings", "History", "Reset", "Most Failed"];
 var mainBtnIds = ["startGame", "settingsGameBtn", "historyGameBtn", "resetGameBtn", "mostFailedBtn"];
