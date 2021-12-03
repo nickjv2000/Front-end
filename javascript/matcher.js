@@ -1,6 +1,6 @@
 /*
-Id variable made smaller from document.getelementbyid to id.
-Creating multitude of global variables for functions.
+	Id variable made smaller from document.getelementbyid to id.
+	Creating multitude of global variables for functions.
 */
 var id = function(id) {return document.getElementById(id);};
 var score = 0;
@@ -54,10 +54,10 @@ function visibleElements() {
 }	
 
 /*
-Start the matching game.
-Apply the function visibleElements.
-Create a variable for the container div.
-Create a card group to put the divs in.
+	Start the matching game.
+	Apply the function visibleElements.
+	Create a variable for the container div.
+	Create a card group to put the divs in.
 */
 function start() {
 
@@ -85,8 +85,8 @@ function start() {
 	for (let u = 0; u < maxImages; u++) {
 
 		/* 
-		Apply a random number to the variables.
-		Create divs, text and buttons.
+			Apply a random number to the variables.
+			Create divs, text and buttons.
 		*/
 		randomNumberName = generateNumberByArray(spliceName);
 		randomNumberImage = generateNumberByArray(spliceImage);
@@ -121,8 +121,8 @@ function start() {
 		}; 
 
 		/*
-		Appending divs to show up on the page.
-		Remove numbers from the games array.
+			Appending divs to show up on the page.
+			Remove numbers from the games array.
 		*/
 		gameNms[0].appendChild(gameNms[1]);
 		gameNms[0].appendChild(gameNms[2]);
@@ -131,9 +131,9 @@ function start() {
 		containerDiv.appendChild(cardGroupDiv);	
 	
 		/*
-		Apply scores when clicking on button
-		Change picture to wrong or right when clicked on button
-		Remove button when button is clicked
+			Apply scores when clicking on button
+			Change picture to wrong or right when clicked on button
+			Remove button when button is clicked
 		*/
 		if(randomNumberName == randomNumberImage) {
 			gameNms[2].onclick = function(){
@@ -184,8 +184,10 @@ function finish() {
 
   	document.getElementById("cardGroup").remove();
   	
-/*  Showing the results of the game.
-	Score higher than 0. */
+ 
+//	Showing the results of the game.
+
+//	Score higher than 0. 
 	if (score > 0){
 
 		document.body.style.backgroundImage = "url('../images/happy.gif')";
@@ -299,11 +301,7 @@ function settings() {
 	createTextSettings();
 }
 
-
-/*
-	Create a page with the 3 most failed buttons
-*/
-
+//	Create a page with the 3 most failed buttons
 function failedScores() {
 
 	settingsGameBtn.disabled = false;
