@@ -10,6 +10,7 @@ var historyScore = false;
 var textScoreResultStat = false;
 var timer = 5;
 var timeleft;
+var timeBar = timer;
 var settingsUsed = false;
 var startedGame = false;
 var resultGame = [];
@@ -59,8 +60,8 @@ function visibleElements() {
 */
 function start() {
 
-	visibleElements();
 	timerStart();
+	visibleElements();
 
 	if(timeleft <= 0){
 		finish();
@@ -213,6 +214,13 @@ function continueGame() {
 		id(gameGenNames[i]).style.display = "";
 	}
 
+	id("countdown").style.display = "";
+	id("containers").style.display = "";
+	id("dropdown").style.display = "";
+	id("text1").style.display = "";
+	id("text2").style.display = "";
+	id("progressbar4").style.display = "";
+
 	score = 0;
 
 	start();
@@ -220,7 +228,6 @@ function continueGame() {
 
 // Reload the page when pressing the "Reset" button.
 function reset() {
-
 	location.reload();
 }
 
@@ -248,6 +255,14 @@ function historyMatches() {
 	for (var i = 0; i < gameNms1.length; i++) {
 		id(gameNms1[i]).style.display = "none";
 	}
+
+	id("containers").style.display = "none";	
+	id("dropdown").style.display = "none";
+	id("text1").style.display = "none";
+	id("text2").style.display = "none";
+	id("progressbar4").style.display = "none";
+	
+	settingsInt();
 
 	settingsInt();
 	createTextHistory();
@@ -299,6 +314,7 @@ function settings() {
 function failedScores() {
 
 	settingsGameBtn.disabled = false;
+	historyGameBtn.disabled = false;
 	mostFailedBtn.disabled = true;
 	historyGameBtn.disabled = false;
 
@@ -335,6 +351,8 @@ function timerStart() {
   	}
   		timeleft -= 1;
 	}, 1000);
+
+	id("progressbar4").style.visibility = "visible";
 }
 
 // Text for the function finish().
@@ -479,37 +497,67 @@ function createTextHistory() {
 		historyTextDiv.appendChild(historyText);
 	}
 
-	for (var v = 0; v < btnName.length; v++) {
-		btnName[v].onclick = function() {
-			resultGame.sort(function(a, b) {
-				return b.score - a.score
-			});
-
-			if (textRemoved == false) {
-				for (var m = 0; m < gamesPlayed; ++m){
-					id("historyText" + [m]).remove();
-				}
-				textRemoved = true;
-			} else if (textRemoved == true) {
-				textRemoved = 2;
-				for (var z = 0; z < gamesPlayed; ++z){
-					id("sortedHistoryText" + [z]).remove();
-				} 
-			} else if (textRemoved == 2) {
-				textRemoved = 2;
-				for (var z = 0; z < gamesPlayed; ++z){
-					id("sortedHistoryText" + [z]).remove();
-				} 
+	btnName[0].onclick = function() {
+		resultGame.sort(function(a, b) {
+			return b.score - a.score
+		});
+		
+		if (textRemoved == false) {
+			for (var m = 0; m < gamesPlayed; ++m){
+				id("historyText" + [m]).remove();
 			}
+			textRemoved = true;
+		} else if (textRemoved == true) {
+			textRemoved = 2;
+			for (var z = 0; z < gamesPlayed; ++z){
+				id("sortedHistoryText" + [z]).remove();
+			} 
+		} else if (textRemoved == 2) {
+			textRemoved = 2;
+			for (var z = 0; z < gamesPlayed; ++z){
+				id("sortedHistoryText" + [z]).remove();
+			}	 
+		}
 
-			for (var i = 0; i < gamesPlayed; ++i) {
-				sortedHistoryText = document.createElement("P");
-				sortedHistoryText.id = "sortedHistoryText" + i;
-				sortedHistoryText.style.textAlign = "center";
-				sortedHistoryText.className = "mt-2";
-				sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
-				historyTextDiv.appendChild(sortedHistoryText);
+		for (var i = 0; i < gamesPlayed; ++i) {
+			sortedHistoryText = document.createElement("P");
+			sortedHistoryText.id = "sortedHistoryText" + i;
+			sortedHistoryText.style.textAlign = "center";
+			sortedHistoryText.className = "mt-2";
+			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+			historyTextDiv.appendChild(sortedHistoryText);
+		}
+	}
+
+		btnName[1].onclick = function() {
+		resultGame.sort(function(a, b) {
+			return b.date - a.date
+		});
+
+		if (textRemoved == false) {
+			for (var m = 0; m < gamesPlayed; ++m){
+				id("historyText" + [m]).remove();
 			}
+			textRemoved = true;
+		} else if (textRemoved == true) {
+			textRemoved = 2;
+			for (var z = 0; z < gamesPlayed; ++z){
+				id("sortedHistoryText" + [z]).remove();
+			} 
+		} else if (textRemoved == 2) {
+			textRemoved = 2;
+			for (var z = 0; z < gamesPlayed; ++z){
+				id("sortedHistoryText" + [z]).remove();
+			}	 
+		}
+
+		for (var i = 0; i < gamesPlayed; ++i) {
+			sortedHistoryText = document.createElement("P");
+			sortedHistoryText.id = "sortedHistoryText" + i;
+			sortedHistoryText.style.textAlign = "center";
+			sortedHistoryText.className = "mt-2";
+			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+			historyTextDiv.appendChild(sortedHistoryText);
 		}
 	}
 }
@@ -622,3 +670,39 @@ mainBtnNames[3].onclick = function() {reset()};
 
 mainBtnNames[4].disabled = true;
 mainBtnNames[4].onclick = function() {failedScores()};
+
+/*
+ *  Creates a progressbar.
+ *  @param id the id of the div we want to transform in a progressbar
+ *  @param duration the duration of the timer example: '10s'
+ *  @param callback, optional function which is called when the progressbar reaches 0.
+ */
+function createProgressbar(id, duration, callback) {
+
+  // We select the div that we want to turn into a progressbar
+  var progressbar = document.getElementById(id);
+  progressbar.className = 'progressbar';
+
+  // We create the div that changes width to show progress
+  var progressbarinner = document.createElement('div');
+  progressbarinner.className = 'inner';
+
+  // Now we set the animation parameters
+  progressbarinner.style.animationDuration = duration;
+
+  // Eventually couple a callback
+  if (typeof(callback) === 'function') {
+    progressbarinner.addEventListener('animationend', callback);
+  }
+
+  // Append the progressbar to the main progressbardiv
+  progressbar.appendChild(progressbarinner);
+
+  // When everything is set up we start the animation
+  progressbarinner.style.animationPlayState = 'running';
+}
+
+addEventListener('load', function() {
+  createProgressbar('progressbar4', timeBar + 1.5 + 's', function() {
+  });
+});
