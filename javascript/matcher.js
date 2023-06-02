@@ -336,7 +336,6 @@ function failedScores() {
 function timerStart() {
 
 	var today = new Date();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
 	timeleft = timer;
 	var gameTimer = setInterval(function(){
@@ -344,7 +343,7 @@ function timerStart() {
     	clearInterval(gameTimer);
     	document.getElementById("countdown").innerHTML = "Finished";
     	finish();
-    	resultGame.push( { score: score, date: time } );
+    	resultGame.push( { score: score, date: today } );
     	timeleft = timer;
   	} else {
     	document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
@@ -493,7 +492,7 @@ function createTextHistory() {
 		historyText.id = "historyText" + i;
 		historyText.style.textAlign = "center";
 		historyText.className = "mt-2";
-		historyText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+		historyText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date.getHours() + ':' + resultGame[i].date.getMinutes() + ':' + resultGame[i].date.getSeconds();
 		historyTextDiv.appendChild(historyText);
 	}
 
@@ -524,14 +523,14 @@ function createTextHistory() {
 			sortedHistoryText.id = "sortedHistoryText" + i;
 			sortedHistoryText.style.textAlign = "center";
 			sortedHistoryText.className = "mt-2";
-			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date.getHours() + ':' + resultGame[i].date.getMinutes() + ':' + resultGame[i].date.getSeconds();
 			historyTextDiv.appendChild(sortedHistoryText);
 		}
 	}
 
-		btnName[1].onclick = function() {
-		resultGame.sort(function(a, b) {
-			return b.date - a.date
+	btnName[1].onclick = function() {
+		resultGame.sort(function(a, b) {	
+			return a.date - b.date
 		});
 
 		if (textRemoved == false) {
@@ -556,7 +555,7 @@ function createTextHistory() {
 			sortedHistoryText.id = "sortedHistoryText" + i;
 			sortedHistoryText.style.textAlign = "center";
 			sortedHistoryText.className = "mt-2";
-			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date;
+			sortedHistoryText.innerHTML = i + '.Score: ' + resultGame[i].score + '. Date: ' + resultGame[i].date.getHours() + ':' + resultGame[i].date.getMinutes() + ':' + resultGame[i].date.getSeconds();
 			historyTextDiv.appendChild(sortedHistoryText);
 		}
 	}
@@ -703,6 +702,6 @@ function createProgressbar(id, duration, callback) {
 }
 
 addEventListener('load', function() {
-  createProgressbar('progressbar4', timeBar + 1.5 + 's', function() {
+  createProgressbar('progressbar4', timeBar + 1 + 's', function() {
   });
 });
